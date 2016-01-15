@@ -12,6 +12,5 @@ namespace DAL.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public ICollection<Team> Teams { get; set; }
-
     }
 }

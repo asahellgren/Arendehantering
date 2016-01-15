@@ -48,7 +48,10 @@
     <Compile Include="Entities\Team.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\WorkItem.cs" />
+    <Compile Include="IRepositories\IIssueRepository.cs" />
+    <Compile Include="IRepositories\ITeam.cs" />
     <Compile Include="IRepositories\IUserRepository.cs" />
+    <Compile Include="IRepositories\IWorkItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>

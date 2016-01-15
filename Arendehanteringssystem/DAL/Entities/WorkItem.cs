@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,6 @@ namespace DAL.Entities
         public int PriorityIndex { get; set; }
         public int? UserId { get; set; }
         public int CreatedByUserId { get; set; }
+        public ICollection Issues { get; set; }
     }
 }

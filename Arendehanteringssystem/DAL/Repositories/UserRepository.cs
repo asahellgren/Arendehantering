@@ -12,7 +12,7 @@ namespace DAL.Repositories
     {
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
+
         }
 
         public User Find(int id)
