@@ -12,7 +12,7 @@ namespace DAL.Repositories
     {
         public List<User> GetAll()
         {
-
+            throw new NotImplementedException();
         }
 
         public User Find(int id)
@@ -31,6 +31,11 @@ namespace DAL.Repositories
         }
 
         public void Remove(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Team> GetUserWithTeams(int id)
         {
             throw new NotImplementedException();
         }
