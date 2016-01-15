@@ -234,3 +234,4 @@ _Pvt_Extensions
 
 # Debug web config
 *.debug.config
+web.config
