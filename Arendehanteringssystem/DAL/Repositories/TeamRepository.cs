@@ -7,15 +7,20 @@ using DAL.Entities;
 using DAL.IRepositories;
 using Dapper;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DAL.Repositories
 {
     public class TeamRepository : ITeam
     {
-       // string connectionString = ConfigurationManager.Connectionstrings["Arendehantering"].ConnectionString;
+        private IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
+
         public Team Add(Team team)
         {
-            throw new NotImplementedException();
+            string query = "INSERT INTO TEAM (Name) VALUES (@Name)";
+            team.Id = _con.Query<int>(query, new { team.Name }).Single();
+            return team;
         }
 
         public Team Find(int id)
@@ -25,7 +30,7 @@ namespace DAL.Repositories
 
         public List<Team> GetAll()
         {
-            throw new NotImplementedException();
+            return _con.Query<Team>("SELECT * FROM User").ToList();
         }
 
         public List<User> GetTeamWithUser(int id)
