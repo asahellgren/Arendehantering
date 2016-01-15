@@ -20,8 +20,8 @@ namespace DAL.Repositories
             var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, UserId) " +
                            "VALUES(@Title, @Description, @DateCreated, @DateDone, @Reviewed, @UserId)" +
                            "SELECT CAST(SCOPE_IDENTITY() as int";
-            
-            
+
+
             var workItemId = _db.Query<int>(sqlQuery, workItem).Single();
             workItem.Id = workItemId;
             return workItem;
@@ -29,7 +29,7 @@ namespace DAL.Repositories
 
         public WorkItem Find(int id)
         {
-            return _db.Query<WorkItem>("SELECT * FROM WorkItem WHERE Id = @id", new {id}).SingleOrDefault();
+            return _db.Query<WorkItem>("SELECT * FROM WorkItem WHERE Id = @id", new { id }).SingleOrDefault();
         }
 
         public List<WorkItem> GetAll()
@@ -39,13 +39,12 @@ namespace DAL.Repositories
 
         public void Remove(int id)
         {
-             _db.Query("DELETE From WorkItem WHERE Id = @id");
+            _db.Query("DELETE From WorkItem WHERE Id = @id");
         }
 
         public WorkItem Update(WorkItem workItem)
         {
-            var sqlQuery =
-                "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed WHERE Id = @id";
+            var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed WHERE Id = @id";
             _db.Execute(sqlQuery, workItem);
             return workItem;
         }
