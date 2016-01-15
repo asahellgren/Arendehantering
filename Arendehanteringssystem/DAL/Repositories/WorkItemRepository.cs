@@ -14,7 +14,7 @@ namespace DAL.Repositories
 {
     public class WorkItemRepository : IWorkItem
     {
-        private IDbConnection _db = new SqlConnection(ConfigurationManager.ConnectionStrings["Arandehantering"].ConnectionString);
+        private readonly IDbConnection _db = new SqlConnection(ConfigurationManager.ConnectionStrings["Arandehantering"].ConnectionString);
         public WorkItem Add(WorkItem workItem)
         {
             var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, UserId) " +
