@@ -17,7 +17,11 @@ namespace DAL.Repositories
         private IDbConnection _db = new SqlConnection(ConfigurationManager.ConnectionStrings["Arandehantering"].ConnectionString);
         public WorkItem Add(WorkItem workItem)
         {
-            var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, UserId) VALUES(@Title, @Description, @DateCreated, @DateDone, @Reviewed, @UserId)";
+            var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, UserId) " +
+                           "VALUES(@Title, @Description, @DateCreated, @DateDone, @Reviewed, @UserId)" +
+                           "SELECT CAST(SCOPE_IDENTITY() as int";
+            
+            
             var workItemId = _db.Query<int>(sqlQuery, workItem).Single();
             workItem.Id = workItemId;
             return workItem;
