@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class User
+    public class Team
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public ICollection<Team> Teams { get; set; }
-
+        public string Name { get; set; }
+        public ICollection<User> TeamUsers { get; set; }
     }
 }
