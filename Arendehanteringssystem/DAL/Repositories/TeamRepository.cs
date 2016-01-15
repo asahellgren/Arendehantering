@@ -25,17 +25,24 @@ namespace DAL.Repositories
 
         public Team Find(int id)
         {
-            throw new NotImplementedException();
+            string query = "SELECT * FROM Team WHERE Id = @Id";
+            return _con.Query<Team>(query, new { id }).Single();
         }
 
         public List<Team> GetAll()
         {
-            return _con.Query<Team>("SELECT * FROM User").ToList();
+            return _con.Query<Team>("SELECT * FROM Team").ToList();
         }
 
-        public List<User> GetTeamWithUser(int id)
+        public Team GetTeamWithUser(int id)
         {
-            throw new NotImplementedException();
+            var query = "SELECT * FROM Team WHERE Id = @Id SELECT UserId FROM UserTeam WHERE TeamId = @Id SELECT * FROM User WHERE Id = UserId";
+            using(var result = _con.QueryMultiple(query, new { id }))
+            {
+                Team team = result.Read<Team>().Single();
+                team.TeamUsers = result.Read<User>().ToList();
+                return team;
+            }
         }
 
         public void Remove(int id)
