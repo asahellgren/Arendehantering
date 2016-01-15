@@ -23,7 +23,7 @@ namespace DAL.Repositories
 
         public User Find(int id)
         {
-            return _con.Query<User>("SELECT * FROM User WHERE")
+            return _con.Query<User>("SELECT * FROM User WHERE Id = @Id", new {id}).SingleOrDefault();
         }
 
         public User Add(User user)
