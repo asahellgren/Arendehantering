@@ -25,7 +25,7 @@ namespace DAL.Repositories
 
         public WorkItem Find(int id)
         {
-            return _db.Query<WorkItem>("SELECT * FROM WorkItem WHERE Id = @id").SingleOrDefault();
+            return _db.Query<WorkItem>("SELECT * FROM WorkItem WHERE Id = @id", new {id}).SingleOrDefault();
         }
 
         public List<WorkItem> GetAll()
