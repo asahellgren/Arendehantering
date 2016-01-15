@@ -51,7 +51,7 @@ namespace DAL.Repositories
 
         public User GetUserWithTeams(int id)
         {
-            var sqlQueryUser = "SELECT * FROM User WHERE id = @id");
+            var sqlQueryUser = "SELECT * FROM User WHERE id = @id";
             var sqlQueryTeam = "SELECT * FROM Team T INNER JOIN UserTeam UT ON T.Id = UT.TeamId WHERE UT.UserId=@Id";
             var user =_con.Query<User>(sqlQueryUser).SingleOrDefault();
             var teams =_con.Query<Team>(sqlQueryTeam).ToList();

@@ -14,6 +14,6 @@ namespace DAL.IRepositories
         User Add(User user);
         User Update(User user);
         void Remove(int id);
-        List<Team> GetUserWithTeams(int id);
+        User GetUserWithTeams(int id);
     }
 }
