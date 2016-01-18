@@ -58,10 +58,6 @@ namespace DAL.Repositories
 
             user.Teams = teams;
             return user;
-
-
-
-
         }
     }
 }
