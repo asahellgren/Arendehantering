@@ -15,14 +15,14 @@ namespace Arendehanteringssystem.Controllers
     {
         private readonly IssueRepository _dBContext = new IssueRepository();
 
-        // GET api/<controller>/5
+        // GET api/issue/5
         [Route("{id}", Name = "GetIssueById")]
         public Issue Get(int id)
         {
             return _dBContext.Find(id);
         }
 
-        // POST api/<controller>
+        // POST api/issue
         [HttpPost]
         public HttpResponseMessage Post([FromBody]Issue issue)
         {
@@ -36,7 +36,7 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // PUT api/<controller>/5
+        // PUT api/issue
         [HttpPut]
         public HttpResponseMessage Put([FromBody]Issue issue)
         {
