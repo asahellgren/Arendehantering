@@ -55,6 +55,7 @@
     <Compile Include="IRepositories\IWorkItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
+    <Compile Include="Repositories\IssueRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Repositories\WorkItemRepository.cs" />
   </ItemGroup>

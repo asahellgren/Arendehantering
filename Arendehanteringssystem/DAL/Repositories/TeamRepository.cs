@@ -37,7 +37,7 @@ namespace DAL.Repositories
         public Team GetTeamWithUser(int id)
         {
             var query = "SELECT * FROM Team WHERE Id = @Id SELECT UserId FROM UserTeam WHERE TeamId = @Id SELECT * FROM User WHERE Id = UserId";
-            using(var result = _con.QueryMultiple(query, new { id }))
+            using (var result = _con.QueryMultiple(query, new { id }))
             {
                 Team team = result.Read<Team>().Single();
                 team.TeamUsers = result.Read<User>().ToList();
