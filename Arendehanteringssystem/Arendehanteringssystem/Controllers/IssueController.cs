@@ -4,37 +4,51 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 using DAL.Entities;
+using DAL.Repositories;
 
 namespace Arendehanteringssystem.Controllers
 {
+    [RoutePrefix("issue")]
     public class IssueController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        private readonly IssueRepository _dBContext = new IssueRepository();
 
         // GET api/<controller>/5
-        public string Get(int id)
+        [Route("{id}", Name = "GetIssueById")]
+        public Issue Get(int id)
         {
-            return "value";
+            return _dBContext.Find(id);
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        [HttpPost]
+        public HttpResponseMessage Post([FromBody]Issue issue)
         {
+            var newIssue = _dBContext.Add(issue);
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.Created,
+                Headers = { Location = new Uri(Url.Link("GetIssueById", new { id = newIssue.Id })) },
+
+            };
+            return response;
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public HttpResponseMessage Put([FromBody]Issue issue)
         {
+            var updatedIssue = _dBContext.Update(issue);
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Headers = { Location = new Uri(Url.Link("GetIssueById", new { id = updatedIssue.Id })) }
+            };
+            return response;
         }
 
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
+
     }
 }
