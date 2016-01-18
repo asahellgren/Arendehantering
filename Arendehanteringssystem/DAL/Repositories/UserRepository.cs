@@ -59,5 +59,16 @@ namespace DAL.Repositories
             user.Teams = teams;
             return user;
         }
+
+        public int AddUserToTeam(int userId, int teamId)
+        {
+            var sqlQuery = "INSERT into [UserTeam] (UserId, TeamId) VALUES(@UserId, @TeamId)";
+            _con.Execute(sqlQuery, new {userId, teamId});
+            return userId;
+        }
+
+
+
+
     }
 }
