@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class WorkItem
+    public sealed class WorkItem
     {
         public int Id { get; set; }
         public string Title { get; set; }
