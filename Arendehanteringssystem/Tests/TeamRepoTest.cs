@@ -23,11 +23,23 @@ namespace Tests
         }
 
         [Test]
-        public void GetAllTeams()
+        public void GetAllTeamsReturnsAllTeams()
         {
             var dbContext = new TeamRepository();
             var result = dbContext.GetAll();
-            Assert.NotNull(result);
+            Assert.AreEqual(result.Count, 4);
+        }
+
+        [Test]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        public void FindReturnsAUser(int a)
+        {
+            var dbContext = new TeamRepository();
+            var result = dbContext.Find(a);
+            Assert.AreEqual(a, result.Id);
         }
     }
 }

@@ -12,32 +12,34 @@ using System.Data.SqlClient;
 
 namespace DAL.Repositories
 {
-    public class TeamRepository : ITeam
+    public sealed class TeamRepository : ITeam
     {
-        private IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
+        private static string connectionstring = "Data Source=.;Initial Catalog=ArendehanteringDB;Integrated Security=True";
+        //private IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
+        private IDbConnection _con = new SqlConnection(connectionstring);
 
         public Team Add(Team team)
         {
-            string query = "INSERT INTO TEAM (Name) VALUES (@Name)";
-            team.Id = _con.Query<int>(query, new { team.Name }).Single();
+            string sqlQuery = "INSERT INTO [Team] (Name) VALUES (@Name)";
+            team.Id = _con.Execute(sqlQuery, team);
             return team;
         }
 
         public Team Find(int id)
         {
-            string query = "SELECT * FROM Team WHERE Id = @Id";
-            return _con.Query<Team>(query, new { id }).Single();
+            string sqlQuery = "SELECT * FROM [Team] WHERE Id = @Id";
+            return _con.Query<Team>(sqlQuery, new { id }).Single();
         }
 
         public List<Team> GetAll()
         {
-            return _con.Query<Team>("SELECT * FROM Team").ToList();
+            return _con.Query<Team>("SELECT * FROM [Team]").ToList();
         }
 
         public Team GetTeamWithUser(int id)
         {
-            var query = "SELECT * FROM Team WHERE Id = @Id SELECT UserId FROM UserTeam WHERE TeamId = @Id SELECT * FROM User WHERE Id = UserId";
-            using (var result = _con.QueryMultiple(query, new { id }))
+            var sqlQuery = "SELECT * FROM [Team] WHERE Id = @Id SELECT UserId FROM [UserTeam] WHERE TeamId = @Id SELECT * FROM [User] WHERE Id = UserId";
+            using (var result = _con.QueryMultiple(sqlQuery, new { id }))
             {
                 Team team = result.Read<Team>().Single();
                 team.TeamUsers = result.Read<User>().ToList();
@@ -47,12 +49,32 @@ namespace DAL.Repositories
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var sqlQuery = "DELETE FROM [Team] WHERE Id = @Id";
+            _con.Execute(sqlQuery, id);
         }
 
         public Team Update(Team team)
         {
-            throw new NotImplementedException();
+            var sqlQuery =
+             "UPDATE [Team] SET Name = @Name WHERE Id = @Id";
+            _con.Execute(sqlQuery, team);
+            return team;
         }
+
+        public int AddTeamMember(int teamId, int userId)
+        {
+            var sqlQuery = "INSERT INTO [UserTeam] (TeamId, UserId) VALUES (@TeamId, @UserId)";
+            _con.Execute(sqlQuery, new { teamId, userId });
+            return teamId;
+        }
+
+        public int RemoveTeamMember(int teamId, int userId)
+        {
+            var sqlQuery = "DELETE FROM [UserTeam] WHERE TeamId = @TeamId AND UserId = @UserId)";
+            _con.Execute(sqlQuery, new { teamId, userId });
+            return teamId;
+        }
+
+
     }
 }
