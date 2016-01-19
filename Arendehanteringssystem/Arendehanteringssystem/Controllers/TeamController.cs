@@ -29,7 +29,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // GET api/team/5
-        [Route("{id}"), HttpGet]
+        [Route("details/{id}"), HttpGet]
         public Team GetTeamWithUsers(int id)
         {
             return _dBContext.GetTeamWithUser(id);
