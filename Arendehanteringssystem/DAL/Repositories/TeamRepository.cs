@@ -25,7 +25,7 @@ namespace DAL.Repositories
 
         public Team Find(int id)
         {
-            string sqlQuery = "SELECT * FROM [Team] WHERE Id = @Id";
+            string sqlQuery = "SELECT * FROM [Team] WHERE Id = @id";
             return _con.Query<Team>(sqlQuery, new { id }).Single();
         }
 
@@ -36,7 +36,7 @@ namespace DAL.Repositories
 
         public Team GetTeamWithUser(int id)
         {
-            var sqlQuery = "SELECT * FROM [Team] WHERE Id = @Id SELECT UserId FROM [UserTeam] WHERE TeamId = @Id SELECT * FROM [User] WHERE Id = UserId";
+            var sqlQuery = "SELECT * FROM [Team] WHERE Id = @id SELECT * FROM [User] JOIN [UserTeam] ON TeamId = @id WHERE [User].Id = [UserTeam].UserId";
             using (var result = _con.QueryMultiple(sqlQuery, new { id }))
             {
                 Team team = result.Read<Team>().Single();
@@ -47,28 +47,28 @@ namespace DAL.Repositories
 
         public void Remove(int id)
         {
-            var sqlQuery = "DELETE FROM [Team] WHERE Id = @Id";
+            var sqlQuery = "DELETE FROM [Team] WHERE Id = @id";
             _con.Execute(sqlQuery, id);
         }
 
         public Team Update(Team team)
         {
             var sqlQuery =
-             "UPDATE [Team] SET Name = @Name WHERE Id = @Id";
+             "UPDATE [Team] SET Name = @Name WHERE Id = @id";
             _con.Execute(sqlQuery, team);
             return team;
         }
 
         public int AddTeamMember(int teamId, int userId)
         {
-            var sqlQuery = "INSERT INTO [UserTeam] (TeamId, UserId) VALUES (@TeamId, @UserId)";
+            var sqlQuery = "INSERT INTO [UserTeam] (TeamId, UserId) VALUES (@teamId, @userId)";
             _con.Execute(sqlQuery, new { teamId, userId });
             return teamId;
         }
 
         public int RemoveTeamMember(int teamId, int userId)
         {
-            var sqlQuery = "DELETE FROM [UserTeam] WHERE TeamId = @TeamId AND UserId = @UserId)";
+            var sqlQuery = "DELETE FROM [UserTeam] WHERE TeamId = @teamId AND UserId = @userId)";
             _con.Execute(sqlQuery, new { teamId, userId });
             return teamId;
         }

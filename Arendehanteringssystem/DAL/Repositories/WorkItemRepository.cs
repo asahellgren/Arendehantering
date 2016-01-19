@@ -17,8 +17,8 @@ namespace DAL.Repositories
         private readonly IDbConnection _db = new SqlConnection(ConfigurationManager.ConnectionStrings["Arandehantering"].ConnectionString);
         public WorkItem Add(WorkItem workItem)
         {
-            var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, UserId) " +
-                           "VALUES(@Title, @Description, @DateCreated, @DateDone, @Reviewed, @UserId)" +
+            var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, CreatedByUserId) " +
+                           "VALUES(@Title, @Description, @DateCreated, @DateDone, @Reviewed, @CreatedByUserId)" +
                            "SELECT CAST(SCOPE_IDENTITY() as int";
 
 
@@ -44,9 +44,11 @@ namespace DAL.Repositories
 
         public WorkItem Update(WorkItem workItem)
         {
-            var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed WHERE Id = @id";
+            var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed UserId = @UserId WHERE Id = @id";
             _db.Execute(sqlQuery, workItem);
             return workItem;
         }
+
+
     }
 }
