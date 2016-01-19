@@ -15,7 +15,7 @@ namespace Tests
         [OneTimeSetUp]
         public void Seed()
         {
-            var dbContext = new TeamRepository();
+            var dbContext = new TeamRepositoryRepository();
             dbContext.Add(new Team { Name = "Team1" });
             dbContext.Add(new Team { Name = "Team2" });
             dbContext.Add(new Team { Name = "Team3" });
@@ -25,7 +25,7 @@ namespace Tests
         [Test]
         public void GetAllTeamsReturnsAllTeams()
         {
-            var dbContext = new TeamRepository();
+            var dbContext = new TeamRepositoryRepository();
             var result = dbContext.GetAll();
             Assert.AreEqual(result.Count, 4);
         }
@@ -37,7 +37,7 @@ namespace Tests
         [TestCase(4)]
         public void FindReturnsAUser(int a)
         {
-            var dbContext = new TeamRepository();
+            var dbContext = new TeamRepositoryRepository();
             var result = dbContext.Find(a);
             Assert.AreEqual(a, result.Id);
         }

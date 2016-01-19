@@ -7,13 +7,13 @@ using DAL.Entities;
 
 namespace DAL.IRepositories
 {
-    public interface ITeam
+    public interface ITeamRepository
     {
         List<Team> GetAll();
         Team Find(int id);
         Team Add(Team team);
-        Team Update(Team team);
-        void Remove(int id);
+        bool Update(Team team);
+        bool Remove(int id);
         Team GetTeamWithUser(int id);
         int AddTeamMember(int teamId, int userId);
         int RemoveTeamMember(int teamId, int userId);

@@ -12,7 +12,7 @@ namespace Arendehanteringssystem.Controllers
     [RoutePrefix("team")]
     public class TeamController : ApiController
     {
-        private readonly TeamRepository _dBContext = new TeamRepository();
+        private readonly TeamRepositoryRepository _dBContext = new TeamRepositoryRepository();
 
         // GET api/team
         [Route(Name = "GetAllTeams"), HttpGet]
@@ -29,14 +29,14 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // GET api/team/5
-        [Route("details/{id}"), HttpGet]
+        [Route("{id}/details"), HttpGet]
         public Team GetTeamWithUsers(int id)
         {
             return _dBContext.GetTeamWithUser(id);
         }
 
         // POST api/team
-        [HttpPost]
+        [Route, HttpPost]
         public HttpResponseMessage Post([FromBody]Team team)
         {
             var newTeam = _dBContext.Add(team);
@@ -49,7 +49,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // PUT api/team
-        [HttpPut]
+        [Route, HttpPut]
         public HttpResponseMessage Put([FromBody]Team team)
         {
             var updatedTeam = _dBContext.Update(team);

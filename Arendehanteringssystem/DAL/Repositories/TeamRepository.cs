@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DAL.Entities;
 using DAL.IRepositories;
 using Dapper;
@@ -12,14 +9,14 @@ using System.Data.SqlClient;
 
 namespace DAL.Repositories
 {
-    public sealed class TeamRepository : ITeam
+    public sealed class TeamRepository: ITeamRepository
     {
-        private IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
+        private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
 
         public Team Add(Team team)
         {
-            string sqlQuery = "INSERT INTO [Team] (Name) VALUES (@Name)";
-            team.Id = _con.Execute(sqlQuery, team);
+            string sqlQuery = "INSERT INTO [Team] (Name) VALUES (@Name) SELECT CAST(SCOPE_IDENTITY() as int)";
+            team.Id = _con.Query(sqlQuery, team).Single();
             return team;
         }
 
@@ -45,18 +42,19 @@ namespace DAL.Repositories
             }
         }
 
-        public void Remove(int id)
+        public bool Remove(int id)
         {
             var sqlQuery = "DELETE FROM [Team] WHERE Id = @id";
-            _con.Execute(sqlQuery, id);
+            int affectedRows = _con.Execute(sqlQuery, new { id });
+            return affectedRows == 1;
         }
 
-        public Team Update(Team team)
+        public bool Update(Team team)
         {
             var sqlQuery =
              "UPDATE [Team] SET Name = @Name WHERE Id = @id";
-            _con.Execute(sqlQuery, team);
-            return team;
+            int affectedRows = _con.Execute(sqlQuery, team);
+            return affectedRows == 1;
         }
 
         public int AddTeamMember(int teamId, int userId)
