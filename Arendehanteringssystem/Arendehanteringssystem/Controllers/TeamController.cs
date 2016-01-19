@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Remoting.Messaging;
 using System.Web.Http;
 using DAL.Entities;
 using DAL.Repositories;
@@ -12,7 +13,7 @@ namespace Arendehanteringssystem.Controllers
     [RoutePrefix("team")]
     public class TeamController : ApiController
     {
-        private readonly TeamRepositoryRepository _dBContext = new TeamRepositoryRepository();
+        private readonly TeamRepository _dBContext = new TeamRepository();
 
         // GET api/team
         [Route(Name = "GetAllTeams"), HttpGet]
@@ -52,12 +53,17 @@ namespace Arendehanteringssystem.Controllers
         [Route, HttpPut]
         public HttpResponseMessage Put([FromBody]Team team)
         {
-            var updatedTeam = _dBContext.Update(team);
-            var response = new HttpResponseMessage
+            var response = new HttpResponseMessage();
+            if (_dBContext.Update(team))
             {
-                StatusCode = HttpStatusCode.OK,
-                Headers = { Location = new Uri(Url.Link("GetTeamById", new { id = updatedTeam.Id })) }
-            };
+                response.StatusCode = HttpStatusCode.OK;
+                response.Headers.Location = new Uri(Url.Link("GetTeamById", new {id = team.Id}));
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.Forbidden;
+            }
+        
             return response;
         }
 
