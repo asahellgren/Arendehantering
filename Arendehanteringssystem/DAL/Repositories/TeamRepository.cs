@@ -14,9 +14,7 @@ namespace DAL.Repositories
 {
     public sealed class TeamRepository : ITeam
     {
-        private static string connectionstring = "Data Source=.;Initial Catalog=ArendehanteringDB;Integrated Security=True";
-        //private IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
-        private IDbConnection _con = new SqlConnection(connectionstring);
+        private IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
 
         public Team Add(Team team)
         {
