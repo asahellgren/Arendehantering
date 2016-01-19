@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using DAL.Entities;
 using DAL.Repositories;
+using Newtonsoft.Json;
 
 namespace Arendehanteringssystem.Controllers
 {
@@ -23,7 +24,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // POST api/issue
-        [HttpPost]
+        [HttpPost,Route]
         public HttpResponseMessage Post([FromBody]Issue issue)
         {
             var newIssue = _dBContext.Add(issue);
@@ -37,7 +38,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // PUT api/issue
-        [HttpPut]
+        [HttpPut,Route]
         public HttpResponseMessage Put([FromBody]Issue issue)
         {
             var updatedIssue = _dBContext.Update(issue);

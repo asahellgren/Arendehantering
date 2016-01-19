@@ -10,8 +10,9 @@ namespace DAL.Entities
     {
         public int Id { get; set; }
         public string Comment { get; set; }
-        public int CratedByUserId { get; set; }
+        public int CreatedByUserId { get; set; }
         public DateTime? DateDone { get; set; }
+        public DateTime? DateCreated { get; set; }
         public int WorkItemId { get; set; }
     }
 }

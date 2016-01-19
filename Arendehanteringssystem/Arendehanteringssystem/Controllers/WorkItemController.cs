@@ -14,7 +14,7 @@ namespace Arendehanteringssystem.Controllers
     {
         private readonly WorkItemRepository dbContext = new WorkItemRepository();
         // GET api/<controller>
-        [HttpGet]
+        [HttpGet,Route(Name = "GetAllWorkItems")]
         public IEnumerable<WorkItem> GetAll()
         {
             var result = dbContext.GetAll();
@@ -30,7 +30,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // POST api/<controller>
-        [HttpPost]
+        [HttpPost,Route]
         public HttpResponseMessage Post([FromBody]WorkItem item)
         {
             WorkItem newItem = dbContext.Add(item);
@@ -43,6 +43,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // PUT api/<controller>/5
+        [HttpPut,Route]
         public HttpResponseMessage Put(int id, [FromBody]WorkItem item)
         {
             WorkItem updatedItem = dbContext.Update(item);
@@ -55,6 +56,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // DELETE api/<controller>/5
+        [HttpDelete,Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
             dbContext.Remove(id);
