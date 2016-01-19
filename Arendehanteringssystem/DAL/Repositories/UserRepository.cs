@@ -23,7 +23,8 @@ namespace DAL.Repositories
 
         public User Find(int id)
         {
-            return _con.Query<User>("SELECT * FROM [User] WHERE Id = @Id").SingleOrDefault();
+            var sqlQuery = "SELECT * FROM[User] WHERE Id = @id";
+            return _con.Query<User>(sqlQuery, new {id}).SingleOrDefault();
         }
 
         public User Add(User user)
@@ -37,8 +38,7 @@ namespace DAL.Repositories
         public User Update(User user)
         {
             var sqlQuery =
-             "UPDATE [User] " +
-             "SET FirstName = @FirstName, LastName = @LastName, UserName = @UserName WHERE Id = @Id";
+             "UPDATE [User] SET FirstName = @FirstName, LastName = @LastName, UserName = @UserName WHERE Id = @Id";
             _con.Execute(sqlQuery, user);
             return user;
         }
@@ -65,6 +65,11 @@ namespace DAL.Repositories
             var sqlQuery = "INSERT into [UserTeam] (UserId, TeamId) VALUES(@UserId, @TeamId)";
             _con.Execute(sqlQuery, new {userId, teamId});
             return userId;
+        }
+
+        public void RemoveTeamFromUser(int userId, int teamId)
+        {
+            
         }
 
 
