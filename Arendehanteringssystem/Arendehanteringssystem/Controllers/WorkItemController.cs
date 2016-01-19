@@ -43,6 +43,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // PUT api/<controller>/5
+        [Route("{id}", Name = "UpdateWorkItem"), HttpPut]
         public HttpResponseMessage Put(int id, [FromBody]WorkItem item)
         {
             WorkItem updatedItem = dbContext.Update(item);
@@ -55,6 +56,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // DELETE api/<controller>/5
+        [Route("{id}", Name = "DeleteWorkItem"), HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
             dbContext.Remove(id);
