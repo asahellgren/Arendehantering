@@ -10,29 +10,15 @@ using DAL.Repositories;
 namespace Arendehanteringssystem.Controllers
 {
     [RoutePrefix("user")]
-    public class UserController : ApiController
+    public sealed class UserController : ApiController
     {
         private readonly UserRepository _dbContext = new UserRepository();
 
         // GET api/user
-        [Route(Name = "GetAllUsers"), HttpGet]
+        [Route, HttpGet]
         public IEnumerable<User> GetAll()
         {
             return _dbContext.GetAll();
-        }
-
-        // GET api/user/5
-        [Route("{id}", Name = "GetUserById"), HttpGet]
-        public User Get(int id)
-        {
-            return _dbContext.Find(id);
-        }
-
-        // GET api/user/5/teams
-        [Route("{id}/teams"), HttpGet]
-        public User GetUserWithTeams(int id)
-        {
-            return _dbContext.GetUserWithTeams(id);
         }
 
         // POST api/user
@@ -48,36 +34,35 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // PUT api/user
-        [Route, HttpPut]
-        public HttpResponseMessage Put([FromBody]User user)
+        // GET api/user/5
+        [Route("{id}", Name = "GetUserById"), HttpGet]
+        public User Get(int id)
+        {
+            return _dbContext.Find(id);
+        }
+
+        // PUT api/user/5
+        [Route("{id}"), HttpPut]
+        public HttpResponseMessage Put(int id, [FromBody]User user)
         {
             var response = new HttpResponseMessage();
             if (user != null)
             {
-                var updatedUser = _dbContext.Update(user);
-
-                response.StatusCode = HttpStatusCode.OK;
-                response.Headers.Location = new Uri(Url.Link("GetUserById", new { id = updatedUser.Id }));
+                var updateSuccessful = _dbContext.Update(user);
+                if (updateSuccessful)
+                {
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Headers.Location = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+                }
+                else
+                {
+                    response.StatusCode = HttpStatusCode.Forbidden;
+                }                
             }
             else
             {
-                response.StatusCode = HttpStatusCode.BadRequest;
+                response.StatusCode = HttpStatusCode.Forbidden;
             }
-            return response;
-        }
-
-        // PUT api/user/5/addteam/5
-        [Route("{userId}/addteamtouser/{teamId}", Name = "AddTeamToUser"), HttpPut]
-        public HttpResponseMessage PutTeamToUser(int userId, int teamId)
-        {
-            var updatedUserId = _dbContext.AddUserToTeam(userId, teamId);
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Headers = { Location = new Uri(Url.Link("GetUserById", new { id = updatedUserId })) }
-
-            };
             return response;
         }
 
@@ -85,27 +70,51 @@ namespace Arendehanteringssystem.Controllers
         [Route("{id}"), HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
-            _dbContext.Remove(id);
-            return new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK
-            };
+            var response = new HttpResponseMessage();
+            var removeSuccessful = _dbContext.Remove(id);
+            response.StatusCode = removeSuccessful ? HttpStatusCode.OK : HttpStatusCode.Forbidden;
+            return response;
         }
 
-        //DELETE api/user/5/removeteamfromuser/5
-        [Route("{userId}/removeteamfromuser/{teamId}", Name = "RemoveTeamFromUser"), HttpDelete]
-        public HttpResponseMessage Delete(int userId, int teamId)
+
+        // PUT api/user/5/jointeam/5
+        [Route("{userId}/jointeam/{teamId}"), HttpPut]
+        public HttpResponseMessage JoinTeam(int userId, int teamId)
         {
-            _dbContext.RemoveTeamFromUser(userId, teamId);
-            return new HttpResponseMessage
+            var response = new HttpResponseMessage();
+            var joinSuccessful = _dbContext.JoinTeam(userId, teamId);
+            if (joinSuccessful)
             {
-                StatusCode = HttpStatusCode.OK
-            };
+                response.StatusCode = HttpStatusCode.OK;
+                response.Headers.Location = new Uri(Url.Link("GetUserById", new {id = userId}));
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.Forbidden;
+            }
+
+            return response;
         }
 
+        //DELETE api/user/5/leaveteam/5
+        [Route("{userId}/leaveteam/{teamId}"), HttpPut]
+        public HttpResponseMessage LeaveTeam(int userId, int teamId)
+        {
+            var response = new HttpResponseMessage();
 
+            var leaveSuccessful = _dbContext.LeaveTeam(userId, teamId);
 
+            if (leaveSuccessful)
+            {
+                response.StatusCode = HttpStatusCode.OK;
+                response.Headers.Location = new Uri(Url.Link("GetUserById", new { id = userId }));
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.Forbidden;
+            }
 
-
+            return response;
+        }
     }
 }

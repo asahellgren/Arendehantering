@@ -12,8 +12,10 @@ namespace DAL.IRepositories
         List<User> GetAll();
         User Find(int id);
         User Add(User user);
-        User Update(User user);
-        void Remove(int id);
-        User GetUserWithTeams(int id);
+        bool Update(User user);
+        bool Remove(int id);
+        bool JoinTeam(int userId, int teamId);
+        bool LeaveTeam(int userId, int teamId);
+
     }
 }
