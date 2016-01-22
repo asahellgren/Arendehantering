@@ -24,7 +24,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // POST api/issue
-        [HttpPost,Route]
+        [HttpPost, Route]
         public HttpResponseMessage Post([FromBody]Issue issue)
         {
             var newIssue = _dBContext.Add(issue);
@@ -38,7 +38,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // PUT api/issue
-        [HttpPut,Route]
+        [HttpPut, Route]
         public HttpResponseMessage Put([FromBody]Issue issue)
         {
             var updatedIssue = _dBContext.Update(issue);

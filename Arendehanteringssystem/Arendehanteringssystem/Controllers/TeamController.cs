@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Remoting.Messaging;
+using System.Text;
 using System.Web.Http;
 using DAL.Entities;
 using DAL.Repositories;
@@ -19,21 +20,32 @@ namespace Arendehanteringssystem.Controllers
         [Route(Name = "GetAllTeams"), HttpGet]
         public IEnumerable<Team> Get()
         {
-            return _dBContext.GetAll();
+            var result = _dBContext.GetAll();
+            if (result == null)
+            {
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent("Could not process request", Encoding.UTF8, "text/plain")
+                };
+                throw new HttpResponseException(response);
+            }
+            return result;
         }
 
         // GET api/team/5
         [Route("{id}", Name = "GetTeamById"), HttpGet]
         public Team Get(int id)
         {
-            return _dBContext.Find(id);
-        }
-
-        // GET api/team/5
-        [Route("{id}/details"), HttpGet]
-        public Team GetTeamWithUsers(int id)
-        {
-            return _dBContext.GetTeamWithUser(id);
+            var team = _dBContext.Find(id);
+            if (team == null)
+            {
+                var response = new HttpResponseMessage();
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.Content = new StringContent("TeamId does not exist", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
+            return team;
         }
 
         // POST api/team
@@ -54,16 +66,18 @@ namespace Arendehanteringssystem.Controllers
         public HttpResponseMessage Put([FromBody]Team team)
         {
             var response = new HttpResponseMessage();
-            if (_dBContext.Update(team))
+            if (team != null)
             {
-                response.StatusCode = HttpStatusCode.OK;
-                response.Headers.Location = new Uri(Url.Link("GetTeamById", new {id = team.Id}));
+                if (_dBContext.Update(team))
+                {
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Headers.Location = new Uri(Url.Link("GetTeamById", new { id = team.Id }));
+                }
+                else
+                {
+                    response.StatusCode = HttpStatusCode.Forbidden;
+                }
             }
-            else
-            {
-                response.StatusCode = HttpStatusCode.Forbidden;
-            }
-        
             return response;
         }
 
@@ -71,13 +85,16 @@ namespace Arendehanteringssystem.Controllers
         [Route("{teamid}/addmember/{userId}", Name = "AddTeamMember"), HttpPut]
         public HttpResponseMessage Put(int teamId, int userId)
         {
-            var updatedTeamId = _dBContext.AddTeamMember(teamId, userId);
-            var response = new HttpResponseMessage
+            var response = new HttpResponseMessage();
+            if (_dBContext.AddTeamMember(teamId, userId))
             {
-                StatusCode = HttpStatusCode.OK,
-                Headers = { Location = new Uri(Url.Link("GetTeamById", new { id = updatedTeamId })) }
-
-            };
+                response.StatusCode = HttpStatusCode.OK;
+                response.Headers.Location = new Uri(Url.Link("GetTeamById", new { id = teamId }));
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+            }
             return response;
         }
 
@@ -85,22 +102,18 @@ namespace Arendehanteringssystem.Controllers
         [Route("{id}"), HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
-            _dBContext.Remove(id);
-            return new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK
-            };
+            var response = new HttpResponseMessage();
+            response.StatusCode = _dBContext.Remove(id) ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            return response;
         }
 
         //DELETE api/team/5/removemember/5
         [Route("{teamId}/removemember/{userId}", Name = "RemoveTeamMember"), HttpDelete]
         public HttpResponseMessage Delete(int teamId, int userId)
         {
-            _dBContext.RemoveTeamMember(teamId, userId);
-            return new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK
-            };
+            var response = new HttpResponseMessage();
+            response.StatusCode = _dBContext.RemoveTeamMember(teamId, userId) ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            return response;
         }
     }
 }

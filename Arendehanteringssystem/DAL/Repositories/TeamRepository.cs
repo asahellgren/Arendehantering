@@ -29,10 +29,15 @@ namespace DAL.Repositories
 
         public Team Find(int id)
         {
-            string sqlQuery = "SELECT * FROM [Team] WHERE Id = @id";
             try
             {
-                return _con.Query<Team>(sqlQuery, new { id }).Single();
+                var sqlQuery = "SELECT * FROM [Team] WHERE Id = @id SELECT * FROM [User] JOIN [UserTeam] ON TeamId = @id WHERE [User].Id = [UserTeam].UserId";
+                using (var result = _con.QueryMultiple(sqlQuery, new { id }))
+                {
+                    Team team = result.Read<Team>().Single();
+                    team.TeamUsers = result.Read<User>().ToList();
+                    return team;
+                }
             }
             catch (Exception)
             {
@@ -81,24 +86,6 @@ namespace DAL.Repositories
             catch (Exception)
             {
                 return false;
-            }
-        }
-
-        public Team GetTeamWithUser(int id)
-        {
-            try
-            {
-                var sqlQuery = "SELECT * FROM [Team] WHERE Id = @id SELECT * FROM [User] JOIN [UserTeam] ON TeamId = @id WHERE [User].Id = [UserTeam].UserId";
-                using (var result = _con.QueryMultiple(sqlQuery, new { id }))
-                {
-                    Team team = result.Read<Team>().Single();
-                    team.TeamUsers = result.Read<User>().ToList();
-                    return team;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
             }
         }
 

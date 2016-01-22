@@ -25,7 +25,6 @@ namespace DAL.Repositories
             }
             catch (Exception)
             {
-
                 return null;
             }
             
@@ -47,7 +46,6 @@ namespace DAL.Repositories
             }
             catch (Exception)
             {
-
                 return null;
             }
            
@@ -65,7 +63,6 @@ namespace DAL.Repositories
             }
             catch (Exception)
             {
-
                 return null;
             }          
         }
@@ -80,7 +77,6 @@ namespace DAL.Repositories
             }
             catch (Exception)
             {
-
                 return false;
             }
 
@@ -98,7 +94,6 @@ namespace DAL.Repositories
             }
             catch (Exception)
             {
-
                 return false;
             }
 
@@ -135,9 +130,6 @@ namespace DAL.Repositories
             }
 
         }
-
-
-
-
+        
     }
 }

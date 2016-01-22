@@ -14,7 +14,6 @@ namespace DAL.IRepositories
         Team Add(Team team);
         bool Update(Team team);
         bool Remove(int id);
-        Team GetTeamWithUser(int id);
         bool AddTeamMember(int teamId, int userId);
         bool RemoveTeamMember(int teamId, int userId);
     }
