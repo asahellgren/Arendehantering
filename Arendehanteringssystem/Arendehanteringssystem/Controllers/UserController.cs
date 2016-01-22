@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using DAL.Entities;
 using DAL.Repositories;
@@ -38,7 +39,16 @@ namespace Arendehanteringssystem.Controllers
         [Route("{id}", Name = "GetUserById"), HttpGet]
         public User Get(int id)
         {
-            return _dbContext.Find(id);
+
+            var user =_dbContext.Find(id);
+            if (user == null)
+            {
+                var response = new HttpResponseMessage();
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.Content = new StringContent("UserId does not exist", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
+            return user;
         }
 
         // PUT api/user/5
