@@ -19,78 +19,121 @@ namespace DAL.Repositories
 
         public List<User> GetAll()
         {
-            return _con.Query<User>("SELECT * FROM [User]").ToList();
+            try
+            {
+                return _con.Query<User>("SELECT * FROM [User]").ToList();
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
         }
 
         public User Find(int id)
         {
-            var sqlQueryUser = "SELECT * FROM [User] WHERE id = @id";
-            var sqlQueryTeam = "SELECT * FROM Team T INNER JOIN UserTeam UT ON T.Id = UT.TeamId WHERE UT.UserId=@Id";
-            var user = _con.Query<User>(sqlQueryUser, new { id }).SingleOrDefault();
-            var teams = _con.Query<Team>(sqlQueryTeam, new { id }).ToList();
-            if (user != null)
+            try
             {
-                user.Teams = teams;
+                var sqlQueryUser = "SELECT * FROM [User] WHERE id = @id";
+                var sqlQueryTeam = "SELECT * FROM Team T INNER JOIN UserTeam UT ON T.Id = UT.TeamId WHERE UT.UserId=@Id";
+                var user = _con.Query<User>(sqlQueryUser, new { id }).SingleOrDefault();
+                var teams = _con.Query<Team>(sqlQueryTeam, new { id }).ToList();
+                if (user != null)
+                {
+                    user.Teams = teams;
+                }
+                return user;
             }
-            return user;
+            catch (Exception)
+            {
+
+                return null;
+            }
+           
 
         }
 
         public User Add(User user)
         {
-            var sqlQuery = "INSERT INTO [User] (FirstName, LastName, UserName) VALUES(@FirstName, @LastName, @UserName)" + "SELECT Id FROM [User] WHERE Id = SCOPE_IDENTITY()";
-            var userId = _con.Query(sqlQuery, user).First();
-            user.Id = userId.Id;
-            return user;
+            try
+            {
+                var sqlQuery = "INSERT INTO [User] (FirstName, LastName, UserName) VALUES(@FirstName, @LastName, @UserName)" + "SELECT Id FROM [User] WHERE Id = SCOPE_IDENTITY()";
+                var userId = _con.Query(sqlQuery, user).First();
+                user.Id = userId.Id;
+                return user;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }          
         }
 
         public bool Update(User user)
         {
-            var sqlQuery =
-             "UPDATE [User] SET FirstName = @FirstName, LastName = @LastName, UserName = @UserName WHERE Id = @Id";
-            var affectedRows = _con.Execute(sqlQuery, user);
-            return affectedRows == 1;
+            try
+            {
+                var sqlQuery = "UPDATE [User] SET FirstName = @FirstName, LastName = @LastName, UserName = @UserName WHERE Id = @Id";
+                var affectedRows = _con.Execute(sqlQuery, user);
+                return affectedRows == 1;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
         }
 
         public bool Remove(int id)
         {
-            var sqlQueryUserTeam = "DELETE FROM [UserTeam] WHERE UserId = @Id";
-            var sqlQueryUser = "DELETE FROM [User] WHERE Id = @Id";
-            _con.Execute(sqlQueryUserTeam, new { id });
-            var affectedRows = _con.Execute(sqlQueryUser, new { id });
-            return affectedRows != 0;
+            try
+            {
+                var sqlQueryUserTeam = "DELETE FROM [UserTeam] WHERE UserId = @Id";
+                var sqlQueryUser = "DELETE FROM [User] WHERE Id = @Id";
+                _con.Execute(sqlQueryUserTeam, new { id });
+                var affectedRows = _con.Execute(sqlQueryUser, new { id });
+                return affectedRows != 0;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
         }
 
         public bool JoinTeam(int userId, int teamId)
         {
-            var sqlCheckIfRowExsists = "SELECT * FROM [UserTeam] WHERE UserId = @userId AND TeamId = @teamId";
-            var result = _con.Query(sqlCheckIfRowExsists, new { userId, teamId });
-            if (result.Count() == 0)
+            try
             {
-                var sqlFindUser = "SELECT Id FROM [User] WHERE Id = @UserId";
-                var sqlFindTeam = "SELECT Id FROM [Team] WHERE Id = @TeamId";
-                var user =_con.Query(sqlFindUser, new {userId});
-                var team = _con.Query(sqlFindUser, new {teamId});
-
-                if (user == null || team == null)
-                {
-                    return false;
-                }
                 var sqlQuery = "INSERT INTO [UserTeam] (UserId, TeamId) VALUES(@userId, @teamId)";
                 var affectedRows = _con.Execute(sqlQuery, new { userId, teamId });
                 return affectedRows == 1;
             }
-            else
+            catch (Exception)
             {
+
                 return false;
             }
+
         }
 
         public bool LeaveTeam(int userId, int teamId)
         {
-            var sqlQuery = "DELETE FROM [UserTeam] WHERE UserId = @userId AND TeamId = @teamId";
-            var affectedRows = _con.Execute(sqlQuery, new { userId, teamId });
-            return affectedRows == 1;
+            try
+            {
+                var sqlQuery = "DELETE FROM [UserTeam] WHERE UserId = @userId AND TeamId = @teamId";
+                var affectedRows = _con.Execute(sqlQuery, new { userId, teamId });
+                return affectedRows == 1;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
         }
 
 

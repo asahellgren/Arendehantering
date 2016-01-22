@@ -66,7 +66,7 @@ namespace Arendehanteringssystem.Controllers
                 }
                 else
                 {
-                    response.StatusCode = HttpStatusCode.Forbidden;
+                    response.StatusCode = HttpStatusCode.BadRequest;
                 }                
             }
             else
@@ -82,7 +82,7 @@ namespace Arendehanteringssystem.Controllers
         {
             var response = new HttpResponseMessage();
             var removeSuccessful = _dbContext.Remove(id);
-            response.StatusCode = removeSuccessful ? HttpStatusCode.OK : HttpStatusCode.Forbidden;
+            response.StatusCode = removeSuccessful ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return response;
         }
 
@@ -100,7 +100,7 @@ namespace Arendehanteringssystem.Controllers
             }
             else
             {
-                response.StatusCode = HttpStatusCode.Forbidden;
+                response.StatusCode = HttpStatusCode.BadRequest;
             }
 
             return response;
@@ -121,7 +121,7 @@ namespace Arendehanteringssystem.Controllers
             }
             else
             {
-                response.StatusCode = HttpStatusCode.Forbidden;
+                response.StatusCode = HttpStatusCode.BadRequest;
             }
 
             return response;
