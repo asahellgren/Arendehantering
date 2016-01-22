@@ -55,7 +55,7 @@ namespace DAL.Repositories
         {
             try
             {
-                var sqlQuery = "INSERT INTO [User] (FirstName, LastName, UserName) VALUES(@FirstName, @LastName, @UserName)" + "SELECT SCOPE_IDENTITY()";
+                var sqlQuery = "INSERT INTO [User] (FirstName, LastName, UserName) VALUES(@FirstName, @LastName, @UserName)" + "SELECT Id from [User] WHERE Id = SCOPE_IDENTITY()";
                 var userId = _con.Query(sqlQuery, user).First();
                 user.Id = userId.Id;
                 return user;

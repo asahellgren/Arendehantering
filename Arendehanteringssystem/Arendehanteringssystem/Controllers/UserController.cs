@@ -19,11 +19,11 @@ namespace Arendehanteringssystem.Controllers
         [Route, HttpGet]
         public IEnumerable<User> GetAll()
         {
-            var response = new HttpResponseMessage();
             var result = _dbContext.GetAll();
             if (result == null)
             {
-                response.StatusCode = HttpStatusCode.NotFound;
+                var response = new HttpResponseMessage();
+                response.StatusCode = HttpStatusCode.BadRequest;
                 response.Content = new StringContent("Could not process request", Encoding.UTF8, "text/plain");
                 throw new HttpResponseException(response);
             }
@@ -42,10 +42,10 @@ namespace Arendehanteringssystem.Controllers
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
             }
-           else
+            else
             {
                 response.StatusCode = HttpStatusCode.Created;
-                response.Headers.Location = new Uri(Url.Link("GetUserById", new {id = newUser.Id}));
+                response.Headers.Location = new Uri(Url.Link("GetUserById", new { id = newUser.Id }));
             }
             return response;
         }  
@@ -55,10 +55,10 @@ namespace Arendehanteringssystem.Controllers
         public User Get(int id)
         {
             var response = new HttpResponseMessage();
-            var user =_dbContext.Find(id);
+            var user = _dbContext.Find(id);
             if (user == null)
             {
-                
+
                 response.StatusCode = HttpStatusCode.NotFound;
                 response.Content = new StringContent("UserId does not exist", Encoding.UTF8, "text/plain");
                 throw new HttpResponseException(response);
@@ -86,7 +86,7 @@ namespace Arendehanteringssystem.Controllers
                 else
                 {
                     response.StatusCode = HttpStatusCode.BadRequest;
-                }                
+                }
             }
             else
             {
@@ -115,7 +115,7 @@ namespace Arendehanteringssystem.Controllers
             if (joinSuccessful)
             {
                 response.StatusCode = HttpStatusCode.OK;
-                response.Headers.Location = new Uri(Url.Link("GetUserById", new {id = userId}));
+                response.Headers.Location = new Uri(Url.Link("GetUserById", new { id = userId }));
             }
             else
             {
@@ -145,5 +145,12 @@ namespace Arendehanteringssystem.Controllers
 
             return response;
         }
+
+        ////GET api/user/search/
+        //[Route("user/search"), HttpGet]
+        //public IEnumerable<User> SearchForUser(string searchName)
+        //{
+        //    return
+        //}
     }
 }
