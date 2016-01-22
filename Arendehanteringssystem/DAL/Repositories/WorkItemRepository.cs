@@ -46,11 +46,18 @@ namespace DAL.Repositories
             return affectedRows == 1;
         }
 
+        public WorkItem Update(WorkItem workItem)
+        {
+            var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed, UserId = @UserId, TeamId = @TeamId WHERE Id = @id";
+            _db.Execute(sqlQuery, workItem);
+            return workItem;
+        }
+
         public bool SetDone(int id)
         {
             var dateDone = DateTime.UtcNow;
             var sqlQuery = "UPDATE WorkItem SET DateDone = @DateDone WHERE Id = @Id";
-            var affectedRows = _db.Execute(sqlQuery,new { id, dateDone});
+            var affectedRows = _db.Execute(sqlQuery, new { id, dateDone });
             return affectedRows == 1;
         }
 
@@ -63,26 +70,24 @@ namespace DAL.Repositories
 
         public bool AssignUser(int id, int userId)
         {
-            throw new NotImplementedException();
+            var sqlQuery = "UPDATE WorkItem SET UserId = @UserId WHERE Id = @Id";
+            var affectedRows = _db.Execute(sqlQuery, new { id, userId });
+            return affectedRows == 1;
         }
 
         public List<WorkItem> FindString(string stringToFind)
         {
-            throw new NotImplementedException();
+            var sqlQuery = "SELECT * FROM WorkItem WHERE CHARINDEX(@StringToFind, Description) > 0";
+            List<WorkItem> result = _db.Query<WorkItem>(sqlQuery, stringToFind).ToList();
+            return result;
         }
 
         public List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            var sqlQuery = "SELECT * FROM WorkItem WHERE DateDone < @endDate AND DateDone > @startDate";
+            List<WorkItem> result = _db.Query<WorkItem>(sqlQuery, new {endDate, startDate}).ToList();
+            return result;
         }
-
-        public WorkItem Update(WorkItem workItem)
-        {
-            var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed, UserId = @UserId, TeamId = @TeamId WHERE Id = @id";
-            _db.Execute(sqlQuery, workItem);
-            return workItem;
-        }
-
 
     }
 }
