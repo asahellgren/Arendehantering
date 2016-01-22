@@ -49,7 +49,6 @@ namespace DAL.Repositories
                 return null;
             }
            
-
         }
 
         public User Add(User user)

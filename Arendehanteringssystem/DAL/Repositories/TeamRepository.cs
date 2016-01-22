@@ -47,13 +47,14 @@ namespace DAL.Repositories
 
         public Team Add(Team team)
         {
-            string sqlQuery = "INSERT INTO [Team] (Name) VALUES (@Name) SELECT SCOPE_IDENTITY()";
+            string sqlQuery = "INSERT INTO [Team] (Name) VALUES (@Name) SELECT * FROM [Team] WHERE Id = SCOPE_IDENTITY()";
             try
             {
-                team.Id = _con.Query(sqlQuery, team).Single();
+                var newTeam = _con.Query(sqlQuery, team).Single();
+                team.Id = newTeam.Id;
                 return team;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }

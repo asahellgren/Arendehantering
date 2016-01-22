@@ -52,12 +52,17 @@ namespace Arendehanteringssystem.Controllers
         [Route, HttpPost]
         public HttpResponseMessage Post([FromBody]Team team)
         {
+            var response = new HttpResponseMessage();
             var newTeam = _dBContext.Add(team);
-            var response = new HttpResponseMessage
+            if (newTeam != null)
             {
-                StatusCode = HttpStatusCode.Created,
-                Headers = { Location = new Uri(Url.Link("GetTeamById", new { id = newTeam.Id })) }
-            };
+                response.StatusCode = HttpStatusCode.Created;
+                response.Headers.Location = new Uri(Url.Link("GetTeamById", new { id = newTeam.Id }));
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+            }
             return response;
         }
 
