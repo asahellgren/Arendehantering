@@ -19,7 +19,17 @@ namespace Arendehanteringssystem.Controllers
         [Route, HttpGet]
         public IEnumerable<User> GetAll()
         {
-            return _dbContext.GetAll();
+            var response = new HttpResponseMessage();
+            var result = _dbContext.GetAll();
+            if (result == null)
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.Content = new StringContent("Could not process request", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
+            return result;
+
+
         }
 
         // POST api/user
@@ -27,11 +37,16 @@ namespace Arendehanteringssystem.Controllers
         public HttpResponseMessage Post([FromBody]User user)
         {
             var newUser = _dbContext.Add(user);
-            var response = new HttpResponseMessage
+            var response = new HttpResponseMessage();
+            if (newUser == null)
             {
-                StatusCode = HttpStatusCode.Created,
-                Headers = { Location = new Uri(Url.Link("GetUserById", new { id = newUser.Id })) }
-            };
+                response.StatusCode = HttpStatusCode.BadRequest;
+            }
+           else
+            {
+                response.StatusCode = HttpStatusCode.Created;
+                response.Headers.Location = new Uri(Url.Link("GetUserById", new {id = newUser.Id}));
+            }
             return response;
         }
 
@@ -39,14 +54,18 @@ namespace Arendehanteringssystem.Controllers
         [Route("{id}", Name = "GetUserById"), HttpGet]
         public User Get(int id)
         {
-
+            var response = new HttpResponseMessage();
             var user =_dbContext.Find(id);
             if (user == null)
             {
-                var response = new HttpResponseMessage();
+                
                 response.StatusCode = HttpStatusCode.NotFound;
                 response.Content = new StringContent("UserId does not exist", Encoding.UTF8, "text/plain");
                 throw new HttpResponseException(response);
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
             }
             return user;
         }
