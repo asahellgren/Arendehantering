@@ -22,13 +22,13 @@ namespace Tests
             dbContext.Add(new Team { Name = "Team4" });
         }
 
-        [Test]
-        public void GetAllTeamsReturnsAllTeams()
-        {
-            var dbContext = new TeamRepository();
-            var result = dbContext.GetAll();
-            Assert.AreEqual(result.Count, 4);
-        }
+        //[Test]
+        //public void GetAllTeamsReturnsAllTeams()
+        //{
+        //    var dbContext = new TeamRepository();
+        //    var result = dbContext.GetAll();
+        //    Assert.AreEqual(result.Count, 4);
+        //}
 
         [Test]
         [TestCase(1)]
