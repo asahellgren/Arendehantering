@@ -53,10 +53,18 @@ namespace DAL.Repositories
             return workItem;
         }
 
-        public bool SetDone(int id)
+        public bool SetStatus(int id, bool status)
         {
+            string sqlQuery = "";
             var dateDone = DateTime.UtcNow;
-            var sqlQuery = "UPDATE WorkItem SET DateDone = @DateDone WHERE Id = @Id";
+            if (status)
+            {
+                sqlQuery = "UPDATE WorkItem SET DateDone = @DateDone WHERE Id = @Id";
+            }
+            else
+            {
+                sqlQuery = "UPDATE WorkItem SET DateDone = null WHERE Id = @Id";
+            }
             var affectedRows = _db.Execute(sqlQuery, new { id, dateDone });
             return affectedRows == 1;
         }
@@ -85,7 +93,7 @@ namespace DAL.Repositories
         public List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate)
         {
             var sqlQuery = "SELECT * FROM WorkItem WHERE DateDone < @endDate AND DateDone > @startDate";
-            List<WorkItem> result = _db.Query<WorkItem>(sqlQuery, new {endDate, startDate}).ToList();
+            List<WorkItem> result = _db.Query<WorkItem>(sqlQuery, new { endDate, startDate }).ToList();
             return result;
         }
 

@@ -14,7 +14,7 @@ namespace DAL.IRepositories
         WorkItem Add(WorkItem workItem);
         WorkItem Update(WorkItem workItem);
         bool Remove(int id);
-        bool SetDone(int id);
+        bool SetStatus(int id, bool status);
         bool SetReviewed(int id);
         bool AssignUser(int id, int userId);
         List<WorkItem> FindString(string stringToFind);
