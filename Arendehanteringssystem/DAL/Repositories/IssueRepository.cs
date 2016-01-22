@@ -16,7 +16,7 @@ namespace DAL.Repositories
         {
             var query = "INSERT INTO Issue (Comment, WorkItemId, DateCreated, DateDone, CreatedByUserId)" +
                         "VALUES(@Comment, @WorkItemId, @DateCreated, @DateDone, @CreatedByUserId)" +
-                        "SELECT CAST(SCOPE_IDENTITY() as int)";
+                        "SELECT SCOPE_IDENTITY()";
             issue.Id = _con.Query<int>(query, issue).Single();
             return issue;
         }
