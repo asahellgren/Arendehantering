@@ -13,6 +13,11 @@ namespace DAL.IRepositories
         WorkItem Find(int id);
         WorkItem Add(WorkItem workItem);
         WorkItem Update(WorkItem workItem);
-        void Remove(int id);
+        bool Remove(int id);
+        bool SetDone(int id);
+        bool SetReviewed(int id);
+        bool AssignUser(int id, int userId);
+        List<WorkItem> FindString(string stringToFind);
+        List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate);
     }
 }

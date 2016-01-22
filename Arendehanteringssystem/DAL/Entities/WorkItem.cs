@@ -18,6 +18,7 @@ namespace DAL.Entities
         public int PriorityIndex { get; set; }
         public int? UserId { get; set; }
         public int CreatedByUserId { get; set; }
+        public int? TeamId { get; set; }
         public ICollection Issues { get; set; }
     }
 }
