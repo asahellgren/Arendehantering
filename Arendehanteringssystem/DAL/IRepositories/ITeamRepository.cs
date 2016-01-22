@@ -9,13 +9,13 @@ namespace DAL.IRepositories
 {
     public interface ITeamRepository
     {
-        List<Team> GetAll();
+        IEnumerable<Team> GetAll();
         Team Find(int id);
         Team Add(Team team);
         bool Update(Team team);
         bool Remove(int id);
         Team GetTeamWithUser(int id);
-        int AddTeamMember(int teamId, int userId);
-        int RemoveTeamMember(int teamId, int userId);
+        bool AddTeamMember(int teamId, int userId);
+        bool RemoveTeamMember(int teamId, int userId);
     }
 }
