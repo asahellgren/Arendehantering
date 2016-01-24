@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -12,6 +13,18 @@ namespace DAL.Repositories
     public class IssueRepository : IIssueRepository
     {
         private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
+
+        public List<Issue> GetAll()
+        {
+            try
+            {
+                return _con.Query<Issue>("SELECT * FROM Issue").ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         public Issue Add(Issue issue)
         {

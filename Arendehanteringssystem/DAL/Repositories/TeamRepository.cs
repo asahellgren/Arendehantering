@@ -54,7 +54,7 @@ namespace DAL.Repositories
                 team.Id = newTeam.Id;
                 return team;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

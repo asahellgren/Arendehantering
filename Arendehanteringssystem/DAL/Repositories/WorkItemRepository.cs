@@ -36,7 +36,14 @@ namespace DAL.Repositories
 
         public List<WorkItem> GetAll()
         {
-            return _con.Query<WorkItem>("SELECT * FROM WorkItem").ToList();
+            try
+            {
+                return _con.Query<WorkItem>("SELECT * FROM WorkItem").ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public bool Remove(int id)

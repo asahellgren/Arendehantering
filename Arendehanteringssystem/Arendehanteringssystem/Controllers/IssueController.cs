@@ -17,6 +17,29 @@ namespace Arendehanteringssystem.Controllers
     {
         private readonly IssueRepository _dBContext = new IssueRepository();
 
+        // GET api/issue?pageindex=1&pagesize=3
+        [Route, HttpGet]
+        public IEnumerable<Issue> GetAll(int? pageIndex = null, int? pageSize = null)
+        {
+            var result = _dBContext.GetAll();
+            if (result == null)
+            {
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent("Could not process request", Encoding.UTF8, "text/plain")
+                };
+                throw new HttpResponseException(response);
+            }
+            if (pageIndex != null && pageSize != null)
+            {
+                return result.Skip(pageIndex.Value * pageSize.Value - pageSize.Value).Take(pageSize.Value);
+            }
+            return result;
+
+        }
+
+
         // GET api/issue/5
         [Route("{id}", Name = "GetIssueById")]
         public Issue Get(int id)

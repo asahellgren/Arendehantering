@@ -14,12 +14,28 @@ namespace Arendehanteringssystem.Controllers
     public class WorkItemController : ApiController
     {
         private readonly WorkItemRepository _dbContext = new WorkItemRepository();
-        // GET api/<controller>
-        [HttpGet, Route(Name = "GetAllWorkItems")]
-        public IEnumerable<WorkItem> GetAll()
+
+        // GET api/workitem?pageindex=1&pagesize=3
+        [Route, HttpGet]
+        public IEnumerable<WorkItem> GetAll(int? pageIndex = null, int? pageSize = null)
         {
             var result = _dbContext.GetAll();
+            if (result == null)
+            {
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent("Could not process request", Encoding.UTF8, "text/plain")
+                };
+                throw new HttpResponseException(response);
+            }
+            if (pageIndex != null && pageSize != null)
+            {
+                return result.Skip(pageIndex.Value * pageSize.Value - pageSize.Value).Take(pageSize.Value);
+            }
             return result;
+
+
         }
 
         // GET api/<controller>/5
