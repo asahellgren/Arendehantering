@@ -52,7 +52,7 @@
     <Compile Include="IRepositories\IIssueRepository.cs" />
     <Compile Include="IRepositories\ITeamRepository.cs" />
     <Compile Include="IRepositories\IUserRepository.cs" />
-    <Compile Include="IRepositories\IWorkItem.cs" />
+    <Compile Include="IRepositories\IWorkItemRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Repositories\IssueRepository.cs" />

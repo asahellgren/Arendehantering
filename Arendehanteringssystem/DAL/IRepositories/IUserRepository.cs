@@ -16,6 +16,7 @@ namespace DAL.IRepositories
         bool Remove(int id);
         bool JoinTeam(int userId, int teamId);
         bool LeaveTeam(int userId, int teamId);
+        List<User> Search(string search);
 
     }
 }

@@ -7,7 +7,7 @@ using DAL.Entities;
 
 namespace DAL.IRepositories
 {
-    public interface IWorkItem
+    public interface IWorkItemRepository
     {
         List<WorkItem> GetAll();
         WorkItem Find(int id);
@@ -19,5 +19,6 @@ namespace DAL.IRepositories
         bool AssignUser(int id, int userId);
         List<WorkItem> FindString(string stringToFind);
         List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate);
+        List<WorkItem> Search(string search);
     }
 }

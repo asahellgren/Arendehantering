@@ -126,8 +126,23 @@ namespace DAL.Repositories
             {
 
                 return false;
-            }
+            }   
+        } 
 
+        public List<User> Search(string search)
+        {          
+            try
+            {
+                var sqlQuery =
+               "SELECT * FROM [User] WHERE FirstName LIKE @search OR LastName LIKE @search OR UserName LIKE @search";
+                search = "%" + search + "%";
+                var users = _con.Query<User>(sqlQuery, new { search }).ToList();
+                return users;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
         
     }

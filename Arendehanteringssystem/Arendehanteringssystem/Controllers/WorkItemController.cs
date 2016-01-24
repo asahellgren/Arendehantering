@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using DAL.Repositories;
 using DAL.Entities;
@@ -102,6 +103,28 @@ namespace Arendehanteringssystem.Controllers
             }
 
             return response;
+        }
+
+        //GET api/workitem?search=frontend
+        [Route, HttpGet]
+        public IEnumerable<WorkItem> SearchForWorkitem(string search)
+        {
+            var response = new HttpResponseMessage();
+            var result = _dbContext.Search(search);
+
+            if (result == null)
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                response.Content = new StringContent("Could not process request", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
+            if (result.Count == 0)
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.Content = new StringContent("No result found", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
+            return result;
         }
     }
 }
