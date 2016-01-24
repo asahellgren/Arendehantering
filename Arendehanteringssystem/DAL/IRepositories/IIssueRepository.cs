@@ -11,6 +11,6 @@ namespace DAL.IRepositories
     {
         Issue Find(int id);
         Issue Add(Issue issue);
-        Issue Update(Issue issue);
+        bool Update(Issue issue);
     }
 }

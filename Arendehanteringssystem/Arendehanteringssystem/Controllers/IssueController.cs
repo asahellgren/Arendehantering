@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using System.Web.Http.Results;
 using DAL.Entities;
@@ -20,7 +21,16 @@ namespace Arendehanteringssystem.Controllers
         [Route("{id}", Name = "GetIssueById")]
         public Issue Get(int id)
         {
-            return _dBContext.Find(id);
+            var response = new HttpResponseMessage();
+            var issue = _dBContext.Find(id);
+            if (issue == null)
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.Content = new StringContent("IssueId does not exist", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+
+            }
+            return issue;
         }
 
         // POST api/issue
@@ -28,25 +38,40 @@ namespace Arendehanteringssystem.Controllers
         public HttpResponseMessage Post([FromBody]Issue issue)
         {
             var newIssue = _dBContext.Add(issue);
-            var response = new HttpResponseMessage
+            var response = new HttpResponseMessage();
+            if (newIssue == null)
             {
-                StatusCode = HttpStatusCode.Created,
-                Headers = { Location = new Uri(Url.Link("GetIssueById", new { id = newIssue.Id })) },
-
-            };
+                response.StatusCode = HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.Created;
+                response.Headers.Location = new Uri(Url.Link("GetIssueById", new { id = newIssue.Id }));
+            }
             return response;
         }
 
         // PUT api/issue
-        [HttpPut, Route]
-        public HttpResponseMessage Put([FromBody]Issue issue)
+        [Route("{id}"), HttpPut]
+        public HttpResponseMessage Put(int id, [FromBody]Issue issue)
         {
-            var updatedIssue = _dBContext.Update(issue);
-            var response = new HttpResponseMessage
+            var response = new HttpResponseMessage();
+            if (issue != null)
             {
-                StatusCode = HttpStatusCode.OK,
-                Headers = { Location = new Uri(Url.Link("GetIssueById", new { id = updatedIssue.Id })) }
-            };
+                if (_dBContext.Update(issue))
+                {
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Headers.Location = new Uri(Url.Link("GetIssueById", new { id = issue.Id }));
+                }
+                else
+                {
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                }
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.Forbidden;
+            }
             return response;
         }
 

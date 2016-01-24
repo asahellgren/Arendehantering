@@ -68,7 +68,7 @@ namespace DAL.Repositories
                 var sqlQuery =
                  "UPDATE [Team] SET Name = @Name WHERE Id = @id";
                 int affectedRows = _con.Execute(sqlQuery, team);
-                return affectedRows == 1;
+                return affectedRows != 0;
             }
             catch (Exception)
             {
@@ -82,7 +82,7 @@ namespace DAL.Repositories
             {
                 var sqlQuery = "DELETE FROM [Team] WHERE Id = @id";
                 int affectedRows = _con.Execute(sqlQuery, new { id });
-                return affectedRows == 1;
+                return affectedRows != 0;
             }
             catch (Exception)
             {
@@ -96,7 +96,7 @@ namespace DAL.Repositories
             {
                 var sqlQuery = "INSERT INTO [UserTeam] (TeamId, UserId) VALUES (@teamId, @userId)";
                 int affectedRows = _con.Execute(sqlQuery, new { teamId, userId });
-                return affectedRows == 1;
+                return affectedRows != 0;
             }
             catch (Exception)
             {
@@ -110,7 +110,7 @@ namespace DAL.Repositories
             {
                 var sqlQuery = "DELETE FROM [UserTeam] WHERE TeamId = @teamId AND UserId = @userId)";
                 int affectedRows = _con.Execute(sqlQuery, new { teamId, userId });
-                return affectedRows == 1;
+                return affectedRows != 0;
             }
             catch (Exception)
             {

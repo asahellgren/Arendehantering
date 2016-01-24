@@ -48,7 +48,7 @@ namespace Arendehanteringssystem.Controllers
                 response.Headers.Location = new Uri(Url.Link("GetUserById", new {id = newUser.Id}));
             }
             return response;
-        }
+        }  
 
         // GET api/user/5
         [Route("{id}", Name = "GetUserById"), HttpGet]

@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -25,14 +26,21 @@ namespace DAL.Repositories
         {
             string sqlQuery = "SELECT * FROM Issue WHERE Id = @id";
 
-            return _con.Query<Issue>(sqlQuery, new {id}).Single();
+            return _con.Query<Issue>(sqlQuery, new { id }).Single();
         }
 
-        public Issue Update(Issue issue)
+        public bool Update(Issue issue)
         {
-            var sqlQuery = "UPDATE [Issue] SET Comment = @Comment, DateDone = @DateDone WHERE Id = @id";
-            _con.Execute(sqlQuery, issue);
-            return issue; 
+            try
+            {
+                var sqlQuery = "UPDATE [Issue] SET Comment = @Comment, DateDone = @DateDone WHERE Id = @id";
+                var affectedRows = _con.Execute(sqlQuery, issue);
+                return affectedRows != 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
