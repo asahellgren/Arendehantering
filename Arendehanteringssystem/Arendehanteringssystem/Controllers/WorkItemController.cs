@@ -42,7 +42,15 @@ namespace Arendehanteringssystem.Controllers
         [Route("{id}", Name = "GetWorkItemById"), HttpGet]
         public WorkItem Get(int id)
         {
+            var response = new HttpResponseMessage();
             var result = _dbContext.Find(id);
+            if (result == null)
+            {
+
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.Content = new StringContent("UserId does not exist", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
             return result;
         }
 
@@ -50,12 +58,19 @@ namespace Arendehanteringssystem.Controllers
         [HttpPost]
         public HttpResponseMessage Post([FromBody]WorkItem item)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
             WorkItem newItem = _dbContext.Add(item);
-            HttpResponseMessage response = new HttpResponseMessage
+            if (newItem == null)
             {
-                StatusCode = HttpStatusCode.Created,
-                Headers = { Location = new Uri(Url.Link("GetWorkItemById", new { id = newItem.Id })) }
-            };
+                response.StatusCode = HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.Created;
+                response.Headers.Location = new Uri(Url.Link("GetWorkItemById", new { id = newItem.Id }));
+
+            }
+
             return response;
         }
 
@@ -63,12 +78,25 @@ namespace Arendehanteringssystem.Controllers
         [HttpPut, Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]WorkItem item)
         {
-            WorkItem updatedItem = _dbContext.Update(item);
-            HttpResponseMessage response = new HttpResponseMessage
+
+            var response = new HttpResponseMessage();
+            if (item != null && id == item.Id)
             {
-                StatusCode = HttpStatusCode.OK,
-                Headers = { Location = new Uri(Url.Link("GetWorkItemById", new { id = updatedItem.Id })) }
-            };
+                var updateSuccessful = _dbContext.Update(item);
+                if (updateSuccessful)
+                {
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Headers.Location = new Uri(Url.Link("GetWorkItemById", new { id = item.Id }));
+                }
+                else
+                {
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                }
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.Forbidden;
+            }
             return response;
         }
 
@@ -76,13 +104,12 @@ namespace Arendehanteringssystem.Controllers
         [HttpDelete, Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            _dbContext.Remove(id);
-            HttpResponseMessage response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-            };
+            var response = new HttpResponseMessage();
+            var removeSuccessful = _dbContext.Remove(id);
+            response.StatusCode = removeSuccessful ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return response;
         }
+
         // GET api/<controller>/5
         [Route("{id}/SetStatus", Name = "SetStatus"), HttpGet]
         public HttpResponseMessage SetStatus(int id, bool done)
@@ -100,7 +127,7 @@ namespace Arendehanteringssystem.Controllers
             }
             return response;
         }
-        
+
         // GET api/<controller>/5
         [Route("{id}/AssignUser", Name = "AssignUser"), HttpGet]
         public HttpResponseMessage SetStatus(int id, int userId)

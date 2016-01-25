@@ -53,11 +53,18 @@ namespace DAL.Repositories
             return affectedRows == 1;
         }
 
-        public WorkItem Update(WorkItem workItem)
+        public bool Update(WorkItem workItem)
         {
-            var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed, UserId = @UserId, TeamId = @TeamId WHERE Id = @id";
-            _con.Execute(sqlQuery, workItem);
-            return workItem;
+            try
+            {
+                var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed, UserId = @UserId, TeamId = @TeamId WHERE Id = @id";
+                var affectedRows = _con.Execute(sqlQuery, workItem);
+                return affectedRows == 1;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool SetStatus(int id, bool status)
