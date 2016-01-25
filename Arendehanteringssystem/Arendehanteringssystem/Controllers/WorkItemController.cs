@@ -109,7 +109,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // GET api/<controller>/5
-        [Route("{id}/SetStatus", Name = "SetStatus"), HttpGet]
+        [Route("{id}/SetStatus", Name = "SetStatus"), HttpPut]
         public HttpResponseMessage SetStatus(int id, bool done)
         {
             var response = new HttpResponseMessage();
@@ -127,8 +127,8 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // GET api/<controller>/5
-        [Route("{id}/AssignUser", Name = "AssignUser"), HttpGet]
-        public HttpResponseMessage SetStatus(int id, int userId)
+        [Route("{id}/AssignUser", Name = "AssignUser"), HttpPut]
+        public HttpResponseMessage AssignUser(int id, int userId)
         {
             var response = new HttpResponseMessage();
             var setStatusSuccessful = _dbContext.AssignUser(id, userId);
@@ -144,7 +144,7 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        //GET api/workitem?search=frontend
+        //GET api/workitem?search=userstring
         [Route, HttpGet]
         public IEnumerable<WorkItem> SearchForWorkitem(string search)
         {
@@ -165,7 +165,8 @@ namespace Arendehanteringssystem.Controllers
             }
             return result;
         }
-        [Route, HttpGet]
+        //GET api/workitem/history?startdate=20160101&enddate=20160201
+        [Route("history"), HttpGet]
         public IEnumerable<WorkItem> History(DateTime startDate, DateTime endDate)
         {
             var response = new HttpResponseMessage();
