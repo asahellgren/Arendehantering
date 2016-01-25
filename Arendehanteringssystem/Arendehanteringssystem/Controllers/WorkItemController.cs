@@ -11,7 +11,7 @@ using DAL.Entities;
 namespace Arendehanteringssystem.Controllers
 {
     [RoutePrefix("workitem")]
-    public class WorkItemController : ApiController
+    public sealed class WorkItemController : ApiController
     {
         private readonly WorkItemRepository _dbContext = new WorkItemRepository();
 
@@ -38,7 +38,7 @@ namespace Arendehanteringssystem.Controllers
 
         }
 
-        // GET api/<controller>/5
+        // GET api/workitem/5
         [Route("{id}", Name = "GetWorkItemById"), HttpGet]
         public WorkItem Get(int id)
         {
@@ -54,7 +54,7 @@ namespace Arendehanteringssystem.Controllers
             return result;
         }
 
-        // POST api/<controller>
+        // POST api/workitem
         [Route, HttpPost]
         public HttpResponseMessage Post([FromBody]WorkItem item)
         {
@@ -74,7 +74,7 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // PUT api/<controller>/5
+        // PUT api/workitem/5
         [HttpPut, Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]WorkItem item)
         {
@@ -98,7 +98,7 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // DELETE api/<controller>/5
+        // DELETE api/workitem/5
         [HttpDelete, Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
@@ -108,7 +108,7 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // GET api/<controller>/5
+        // GET api/workitem/5/SetStatus?done=true
         [Route("{id}/SetStatus", Name = "SetStatus"), HttpPut]
         public HttpResponseMessage SetStatus(int id, bool done)
         {
@@ -126,7 +126,7 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // GET api/<controller>/5
+        // GET api/workitem/5?userid=1
         [Route("{id}/AssignUser", Name = "AssignUser"), HttpPut]
         public HttpResponseMessage AssignUser(int id, int userId)
         {
@@ -165,7 +165,7 @@ namespace Arendehanteringssystem.Controllers
             }
             return result;
         }
-        //GET api/workitem/history?startdate=20160101&enddate=20160201
+        //GET api/workitem/history?startdate=2016-01-01&enddate=2016-02-01
         [Route("history"), HttpGet]
         public IEnumerable<WorkItem> History(DateTime startDate, DateTime endDate)
         {

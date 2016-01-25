@@ -12,7 +12,7 @@ using DAL.Repositories;
 namespace Arendehanteringssystem.Controllers
 {
     [RoutePrefix("team")]
-    public class TeamController : ApiController
+    public sealed class TeamController : ApiController
     {
         private readonly TeamRepository _dBContext = new TeamRepository();
 

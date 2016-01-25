@@ -10,7 +10,7 @@ using DAL.IRepositories;
 
 namespace DAL.Repositories
 {
-    public class IssueRepository : IIssueRepository
+    public sealed class IssueRepository : IIssueRepository
     {
         private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
 
