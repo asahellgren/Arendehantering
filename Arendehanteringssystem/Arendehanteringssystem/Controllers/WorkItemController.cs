@@ -10,7 +10,7 @@ using DAL.Entities;
 
 namespace Arendehanteringssystem.Controllers
 {
-    [RoutePrefix("WorkItem")]
+    [RoutePrefix("workitem")]
     public class WorkItemController : ApiController
     {
         private readonly WorkItemRepository _dbContext = new WorkItemRepository();
@@ -47,7 +47,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // POST api/<controller>
-        [HttpPost]
+        [Route, HttpPost]
         public HttpResponseMessage Post([FromBody]WorkItem item)
         {
             WorkItem newItem = _dbContext.Add(item);
@@ -63,12 +63,23 @@ namespace Arendehanteringssystem.Controllers
         [HttpPut, Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]WorkItem item)
         {
-            WorkItem updatedItem = _dbContext.Update(item);
-            HttpResponseMessage response = new HttpResponseMessage
+            var response = new HttpResponseMessage();
+            if (item != null && id == item.Id)
             {
-                StatusCode = HttpStatusCode.OK,
-                Headers = { Location = new Uri(Url.Link("GetWorkItemById", new { id = updatedItem.Id })) }
-            };
+                if (_dbContext.Update(item))
+                {
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Headers.Location = new Uri(Url.Link("GetWorkItemById", new { id = item.Id }));
+                }
+                else
+                {
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                }
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+            }
             return response;
         }
 
@@ -100,7 +111,7 @@ namespace Arendehanteringssystem.Controllers
             }
             return response;
         }
-        
+
         // GET api/<controller>/5
         [Route("{id}/AssignUser", Name = "AssignUser"), HttpGet]
         public HttpResponseMessage SetStatus(int id, int userId)

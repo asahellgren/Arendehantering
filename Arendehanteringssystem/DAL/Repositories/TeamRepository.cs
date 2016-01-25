@@ -67,7 +67,7 @@ namespace DAL.Repositories
             {
                 var sqlQuery =
                  "UPDATE [Team] SET Name = @Name WHERE Id = @id";
-                int affectedRows = _con.Execute(sqlQuery, team);
+                var affectedRows = _con.Execute(sqlQuery, team);
                 return affectedRows != 0;
             }
             catch (Exception)
