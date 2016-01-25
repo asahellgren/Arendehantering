@@ -100,8 +100,7 @@ namespace Arendehanteringssystem.Controllers
         public HttpResponseMessage Delete(int id)
         {
             var response = new HttpResponseMessage();
-            var removeSuccessful = _dbContext.Remove(id);
-            response.StatusCode = removeSuccessful ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            response.StatusCode = _dbContext.Remove(id) ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return response;
         }
 
