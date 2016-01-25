@@ -98,12 +98,11 @@ namespace Arendehanteringssystem.Controllers
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
             }
-
             return response;
         }
         
         // GET api/<controller>/5
-        [Route("{id}/AssignUser", Name = "AsignUser"), HttpGet]
+        [Route("{id}/AssignUser", Name = "AssignUser"), HttpGet]
         public HttpResponseMessage SetStatus(int id, int userId)
         {
             var response = new HttpResponseMessage();
@@ -117,7 +116,6 @@ namespace Arendehanteringssystem.Controllers
             {
                 response.StatusCode = HttpStatusCode.BadRequest;
             }
-
             return response;
         }
 
@@ -127,6 +125,26 @@ namespace Arendehanteringssystem.Controllers
         {
             var response = new HttpResponseMessage();
             var result = _dbContext.Search(search);
+
+            if (result == null)
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
+                response.Content = new StringContent("Could not process request", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
+            if (result.Count == 0)
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.Content = new StringContent("No result found", Encoding.UTF8, "text/plain");
+                throw new HttpResponseException(response);
+            }
+            return result;
+        }
+        [Route, HttpGet]
+        public IEnumerable<WorkItem> History(DateTime startDate, DateTime endDate)
+        {
+            var response = new HttpResponseMessage();
+            var result = _dbContext.GetAllDoneBetweenDates(startDate, endDate);
 
             if (result == null)
             {

@@ -90,12 +90,12 @@ namespace DAL.Repositories
             return affectedRows == 1;
         }
 
-        public List<WorkItem> FindString(string stringToFind)
-        {
-            var sqlQuery = "SELECT * FROM WorkItem WHERE CHARINDEX(@StringToFind, Description) > 0";
-            List<WorkItem> result = _con.Query<WorkItem>(sqlQuery, stringToFind).ToList();
-            return result;
-        }
+        //public List<WorkItem> FindString(string stringToFind)
+        //{
+        //    var sqlQuery = "SELECT * FROM WorkItem WHERE CHARINDEX(@StringToFind, Description) > 0";
+        //    List<WorkItem> result = _con.Query<WorkItem>(sqlQuery, stringToFind).ToList();
+        //    return result;
+        //}
 
         public List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate)
         {

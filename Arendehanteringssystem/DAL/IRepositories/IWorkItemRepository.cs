@@ -17,7 +17,6 @@ namespace DAL.IRepositories
         bool SetStatus(int id, bool status);
         bool SetReviewed(int id);
         bool AssignUser(int id, int userId);
-        List<WorkItem> FindString(string stringToFind);
         List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate);
         List<WorkItem> Search(string search);
     }
