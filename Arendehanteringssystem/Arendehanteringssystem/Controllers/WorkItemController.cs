@@ -87,11 +87,8 @@ namespace Arendehanteringssystem.Controllers
         [HttpDelete, Route("{id}")]
         public HttpResponseMessage Delete(int id)
         {
-            _dbContext.Remove(id);
-            HttpResponseMessage response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-            };
+            var response = new HttpResponseMessage();
+            response.StatusCode = _dbContext.Remove(id) ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return response;
         }
         // GET api/<controller>/5
