@@ -18,18 +18,10 @@ namespace DAL.Repositories
     {
         private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
 
-        
+
 
         public List<User> GetAll()
         {
-            var retryStrategy = new Incremental(RETRY_COUNT, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
-
-            // Step 2 
-            var retryPolicy = new RetryPolicy<CustomTransientErrorDetectionStrategy>(retryStrategy);
-
-            // Step 3
-            retryPolicy.ExecuteAction();
-        }
             try
             {
                 return _con.Query<User>("SELECT * FROM [User]").ToList();
@@ -38,7 +30,7 @@ namespace DAL.Repositories
             {
                 return null;
             }
-            
+
         }
 
         public User Find(int id)
