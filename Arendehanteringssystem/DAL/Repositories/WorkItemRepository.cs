@@ -12,7 +12,7 @@ using DAL.IRepositories;
 
 namespace DAL.Repositories
 {
-    public class WorkItemRepository : IWorkItemRepository
+    public sealed class WorkItemRepository : IWorkItemRepository
     {
         private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
         public WorkItem Add(WorkItem workItem)
@@ -98,13 +98,7 @@ namespace DAL.Repositories
             return affectedRows == 1;
         }
 
-        //public List<WorkItem> FindString(string stringToFind)
-        //{
-        //    var sqlQuery = "SELECT * FROM WorkItem WHERE CHARINDEX(@StringToFind, Description) > 0";
-        //    List<WorkItem> result = _con.Query<WorkItem>(sqlQuery, stringToFind).ToList();
-        //    return result;
-        //}
-
+       
         public List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate)
         {
             var sqlQuery = "SELECT * FROM WorkItem WHERE DateDone < @endDate AND DateDone > @startDate";

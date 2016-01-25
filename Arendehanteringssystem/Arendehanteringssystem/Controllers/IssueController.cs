@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace Arendehanteringssystem.Controllers
 {
     [RoutePrefix("issue")]
-    public class IssueController : ApiController
+    public sealed class IssueController : ApiController
     {
         private readonly IssueRepository _dBContext = new IssueRepository();
 
