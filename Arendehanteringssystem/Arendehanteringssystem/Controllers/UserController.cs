@@ -80,7 +80,7 @@ namespace Arendehanteringssystem.Controllers
         public HttpResponseMessage Put(int id, [FromBody]User user)
         {
             var response = new HttpResponseMessage();
-            if (user != null)
+            if (user != null && id == user.Id)
             {
                 var updateSuccessful = _dbContext.Update(user);
                 if (updateSuccessful)
