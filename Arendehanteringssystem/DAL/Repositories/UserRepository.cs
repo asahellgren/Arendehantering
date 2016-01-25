@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 using Dapper;
 using DAL.Entities;
 using DAL.IRepositories;
+using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 
 namespace DAL.Repositories
 {
     public sealed class UserRepository : IUserRepository
     {
         private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
+
+
 
         public List<User> GetAll()
         {
@@ -27,7 +30,7 @@ namespace DAL.Repositories
             {
                 return null;
             }
-            
+
         }
 
         public User Find(int id)

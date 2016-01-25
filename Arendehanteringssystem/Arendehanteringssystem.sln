@@ -5,11 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arendehanteringssystem", "Arendehanteringssystem\Arendehanteringssystem.csproj", "{FDB26242-F62A-4AD5-8C8E-66B83066C7CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{08967D41-43A6-4219-94EA-8CD2F61D9213}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{5C4897EE-CD5F-4147-B7EC-3B28593EBAC4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1C0352D6-6F80-41CA-80A8-4CC4F6AC1BFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,20 +17,15 @@ Global
 		{FDB26242-F62A-4AD5-8C8E-66B83066C7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDB26242-F62A-4AD5-8C8E-66B83066C7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDB26242-F62A-4AD5-8C8E-66B83066C7CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08967D41-43A6-4219-94EA-8CD2F61D9213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08967D41-43A6-4219-94EA-8CD2F61D9213}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08967D41-43A6-4219-94EA-8CD2F61D9213}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08967D41-43A6-4219-94EA-8CD2F61D9213}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C4897EE-CD5F-4147-B7EC-3B28593EBAC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C4897EE-CD5F-4147-B7EC-3B28593EBAC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C4897EE-CD5F-4147-B7EC-3B28593EBAC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C4897EE-CD5F-4147-B7EC-3B28593EBAC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C0352D6-6F80-41CA-80A8-4CC4F6AC1BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C0352D6-6F80-41CA-80A8-4CC4F6AC1BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C0352D6-6F80-41CA-80A8-4CC4F6AC1BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C0352D6-6F80-41CA-80A8-4CC4F6AC1BFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8
 	EndGlobalSection
 EndGlobal
