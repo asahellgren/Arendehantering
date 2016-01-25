@@ -10,7 +10,7 @@ using DAL.Entities;
 
 namespace Arendehanteringssystem.Controllers
 {
-    [RoutePrefix("WorkItem")]
+    [RoutePrefix("workitem")]
     public class WorkItemController : ApiController
     {
         private readonly WorkItemRepository _dbContext = new WorkItemRepository();
@@ -55,7 +55,7 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // POST api/<controller>
-        [HttpPost]
+        [Route, HttpPost]
         public HttpResponseMessage Post([FromBody]WorkItem item)
         {
             HttpResponseMessage response = new HttpResponseMessage();
@@ -78,12 +78,19 @@ namespace Arendehanteringssystem.Controllers
         [HttpPut, Route("{id}")]
         public HttpResponseMessage Put(int id, [FromBody]WorkItem item)
         {
+<<<<<<< HEAD
 
             var response = new HttpResponseMessage();
             if (item != null && id == item.Id)
             {
                 var updateSuccessful = _dbContext.Update(item);
                 if (updateSuccessful)
+=======
+            var response = new HttpResponseMessage();
+            if (item != null && id == item.Id)
+            {
+                if (_dbContext.Update(item))
+>>>>>>> 418228a6b180a21a4b067fef1998bb20d657615b
                 {
                     response.StatusCode = HttpStatusCode.OK;
                     response.Headers.Location = new Uri(Url.Link("GetWorkItemById", new { id = item.Id }));
@@ -95,7 +102,11 @@ namespace Arendehanteringssystem.Controllers
             }
             else
             {
+<<<<<<< HEAD
                 response.StatusCode = HttpStatusCode.Forbidden;
+=======
+                response.StatusCode = HttpStatusCode.BadRequest;
+>>>>>>> 418228a6b180a21a4b067fef1998bb20d657615b
             }
             return response;
         }

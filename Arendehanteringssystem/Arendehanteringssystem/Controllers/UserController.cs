@@ -63,14 +63,9 @@ namespace Arendehanteringssystem.Controllers
             var user = _dbContext.Find(id);
             if (user == null)
             {
-
                 response.StatusCode = HttpStatusCode.NotFound;
                 response.Content = new StringContent("UserId does not exist", Encoding.UTF8, "text/plain");
                 throw new HttpResponseException(response);
-            }
-            else
-            {
-                response.StatusCode = HttpStatusCode.BadRequest;
             }
             return user;
         }
