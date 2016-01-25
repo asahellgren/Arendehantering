@@ -46,9 +46,8 @@ namespace Arendehanteringssystem.Controllers
             var result = _dbContext.Find(id);
             if (result == null)
             {
-
                 response.StatusCode = HttpStatusCode.NotFound;
-                response.Content = new StringContent("UserId does not exist", Encoding.UTF8, "text/plain");
+                response.Content = new StringContent("WorkItemId does not exist", Encoding.UTF8, "text/plain");
                 throw new HttpResponseException(response);
             }
             return result;
@@ -108,7 +107,7 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // GET api/workitem/5/SetStatus?done=true
+        // PUT api/workitem/5/SetStatus?done=true
         [Route("{id}/SetStatus", Name = "SetStatus"), HttpPut]
         public HttpResponseMessage SetStatus(int id, bool done)
         {
@@ -126,8 +125,8 @@ namespace Arendehanteringssystem.Controllers
             return response;
         }
 
-        // GET api/workitem/5?userid=1
-        [Route("{id}/AssignUser", Name = "AssignUser"), HttpPut]
+        // PUT api/workitem/5/assignuser/2
+        [Route("{id}/AssignUser/{userId}"), HttpPut]
         public HttpResponseMessage AssignUser(int id, int userId)
         {
             var response = new HttpResponseMessage();
@@ -165,6 +164,7 @@ namespace Arendehanteringssystem.Controllers
             }
             return result;
         }
+
         //GET api/workitem/history?startdate=2016-01-01&enddate=2016-02-01
         [Route("history"), HttpGet]
         public IEnumerable<WorkItem> History(DateTime startDate, DateTime endDate)

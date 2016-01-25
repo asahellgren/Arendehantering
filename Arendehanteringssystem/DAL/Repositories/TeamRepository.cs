@@ -12,13 +12,14 @@ namespace DAL.Repositories
 {
     public sealed class TeamRepository : ITeamRepository
     {
-        private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
+        private readonly SqlConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
 
         public IEnumerable<Team> GetAll()
         {
+            _con.OpenWithRetry();
             try
             {
-                return _con.Query<Team>("SELECT * FROM [Team]");
+                return _con.QueryWithRetry<Team>("SELECT * FROM [Team]");
             }
             catch (Exception)
             {
@@ -28,16 +29,21 @@ namespace DAL.Repositories
 
         public Team Find(int id)
         {
+            _con.OpenWithRetry();
+            var sqlQueryTeam = "SELECT * FROM [Team] WHERE Id = @id";
+            var sqlQueryUser = "SELECT * FROM [User] JOIN [UserTeam] ON TeamId = @id WHERE [User].Id = [UserTeam].UserId";
             try
             {
-                var sqlQuery = "SELECT * FROM [Team] WHERE Id = @id SELECT * FROM [User] JOIN [UserTeam] ON TeamId = @id WHERE [User].Id = [UserTeam].UserId";
-                using (var result = _con.QueryMultiple(sqlQuery, new { id }))
+
+                var team = _con.QueryWithRetry<Team>(sqlQueryUser, new { id }).SingleOrDefault();
+                var users = _con.QueryWithRetry<User>(sqlQueryTeam, new { id }).ToList();
+
+                if (team != null)
                 {
-                    Team team = result.Read<Team>().Single();
-                    team.TeamUsers = result.Read<User>().ToList();
-                    return team;
+                    team.TeamUsers = users;
                 }
-            }
+                return team;
+            }            
             catch (Exception)
             {
                 return null;
@@ -46,10 +52,11 @@ namespace DAL.Repositories
 
         public Team Add(Team team)
         {
+            _con.OpenWithRetry();
             string sqlQuery = "INSERT INTO [Team] (Name) VALUES (@Name) SELECT * FROM [Team] WHERE Id = SCOPE_IDENTITY()";
             try
             {
-                var newTeam = _con.Query(sqlQuery, team).Single();
+                var newTeam = _con.QueryWithRetry<Team>(sqlQuery, team).Single();
                 team.Id = newTeam.Id;
                 return team;
             }
@@ -62,11 +69,11 @@ namespace DAL.Repositories
 
         public bool Update(Team team)
         {
+            _con.OpenWithRetry();
+            var sqlQuery = "UPDATE [Team] SET Name = @Name WHERE Id = @id";
             try
-            {
-                var sqlQuery =
-                 "UPDATE [Team] SET Name = @Name WHERE Id = @id";
-                var affectedRows = _con.Execute(sqlQuery, team);
+            {        
+                var affectedRows = _con.ExecuteWithRetry(sqlQuery, team);
                 return affectedRows != 0;
             }
             catch (Exception)
@@ -77,10 +84,11 @@ namespace DAL.Repositories
 
         public bool Remove(int id)
         {
+            _con.OpenWithRetry();
+            var sqlQuery = "DELETE FROM [Team] WHERE Id = @id";
             try
             {
-                var sqlQuery = "DELETE FROM [Team] WHERE Id = @id";
-                int affectedRows = _con.Execute(sqlQuery, new { id });
+                int affectedRows = _con.ExecuteWithRetry(sqlQuery, new { id });
                 return affectedRows != 0;
             }
             catch (Exception)
@@ -91,10 +99,11 @@ namespace DAL.Repositories
 
         public bool AddTeamMember(int teamId, int userId)
         {
+            _con.OpenWithRetry();
+            var sqlQuery = "INSERT INTO [UserTeam] (TeamId, UserId) VALUES (@teamId, @userId)";
             try
             {
-                var sqlQuery = "INSERT INTO [UserTeam] (TeamId, UserId) VALUES (@teamId, @userId)";
-                int affectedRows = _con.Execute(sqlQuery, new { teamId, userId });
+                int affectedRows = _con.ExecuteWithRetry(sqlQuery, new { teamId, userId });
                 return affectedRows != 0;
             }
             catch (Exception)
@@ -105,10 +114,11 @@ namespace DAL.Repositories
 
         public bool RemoveTeamMember(int teamId, int userId)
         {
+            _con.OpenWithRetry();
+            var sqlQuery = "DELETE FROM [UserTeam] WHERE TeamId = @teamId AND UserId = @userId)";
             try
             {
-                var sqlQuery = "DELETE FROM [UserTeam] WHERE TeamId = @teamId AND UserId = @userId)";
-                int affectedRows = _con.Execute(sqlQuery, new { teamId, userId });
+                int affectedRows = _con.ExecuteWithRetry(sqlQuery, new { teamId, userId });
                 return affectedRows != 0;
             }
             catch (Exception)
