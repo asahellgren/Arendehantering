@@ -20,7 +20,7 @@ namespace Arendehanteringssystem.Controllers
         public IEnumerable<User> GetAll(int? pageIndex = null, int? pageSize = null)
         {
             var result = _dbContext.GetAll();
-            if (result == null) 
+            if (result == null)
             {
                 var response = new HttpResponseMessage
                 {
@@ -31,7 +31,7 @@ namespace Arendehanteringssystem.Controllers
             }
             if (pageIndex != null && pageSize != null)
             {
-                return result.Skip(pageIndex.Value*pageSize.Value-pageSize.Value).Take(pageSize.Value);
+                return result.Skip(pageIndex.Value * pageSize.Value - pageSize.Value).Take(pageSize.Value);
             }
             return result;
 
@@ -53,7 +53,7 @@ namespace Arendehanteringssystem.Controllers
                 response.Headers.Location = new Uri(Url.Link("GetUserById", new { id = newUser.Id }));
             }
             return response;
-        }  
+        }
 
         // GET api/user/5
         [Route("{id}", Name = "GetUserById"), HttpGet]

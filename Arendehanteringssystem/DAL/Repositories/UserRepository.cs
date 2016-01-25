@@ -15,8 +15,6 @@ namespace DAL.Repositories
     {
         private readonly IDbConnection _con = new SqlConnection(ConfigurationManager.ConnectionStrings["Arendehantering"].ConnectionString);
 
-
-
         public List<User> GetAll()
         {
             try
@@ -48,7 +46,7 @@ namespace DAL.Repositories
             {
                 return null;
             }
-           
+
         }
 
         public User Add(User user)
@@ -63,7 +61,7 @@ namespace DAL.Repositories
             catch (Exception)
             {
                 return null;
-            }          
+            }
         }
 
         public bool Update(User user)
@@ -111,7 +109,6 @@ namespace DAL.Repositories
 
                 return false;
             }
-
         }
 
         public bool LeaveTeam(int userId, int teamId)
@@ -126,11 +123,11 @@ namespace DAL.Repositories
             {
 
                 return false;
-            }   
-        } 
+            }
+        }
 
         public List<User> Search(string search)
-        {          
+        {
             try
             {
                 var sqlQuery =
@@ -144,6 +141,5 @@ namespace DAL.Repositories
                 return null;
             }
         }
-        
     }
 }

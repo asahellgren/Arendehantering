@@ -46,9 +46,9 @@ namespace DAL.Repositories
 
         public bool Remove(int id)
         {
-            var sqlQuery = "DELETE From WorkItem WHERE Id = @id";
+            var sqlQuery = "DELETE From Issue where WorkItemId = @id DELETE FROM WorkItem WHERE Id = @id";
             var affectedRows = _con.Execute(sqlQuery, id);
-            return affectedRows == 1;
+            return affectedRows != 0;
         }
 
         public bool Update(WorkItem workItem)
@@ -56,14 +56,14 @@ namespace DAL.Repositories
             try
             {
                 var sqlQuery = "UPDATE WorkItem SET Title = @Title, Description = @Description, DateCreated = @DateCreated, DateDone = @DateDone, Reviewed = @Reviewed, UserId = @UserId, TeamId = @TeamId WHERE Id = @id";
-                var affectedRows =_con.Execute(sqlQuery, workItem);
+                var affectedRows = _con.Execute(sqlQuery, workItem);
                 return affectedRows != 0;
             }
             catch (Exception)
             {
                 return false;
             }
-            
+
         }
 
         public bool SetStatus(int id, bool status)
@@ -96,7 +96,7 @@ namespace DAL.Repositories
             return affectedRows == 1;
         }
 
-       
+
         public List<WorkItem> GetAllDoneBetweenDates(DateTime startDate, DateTime endDate)
         {
             var sqlQuery = "SELECT * FROM WorkItem WHERE DateDone < @endDate AND DateDone > @startDate";
@@ -119,6 +119,5 @@ namespace DAL.Repositories
                 return null;
             }
         }
-
     }
 }
