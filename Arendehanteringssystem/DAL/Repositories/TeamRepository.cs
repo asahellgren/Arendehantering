@@ -35,8 +35,8 @@ namespace DAL.Repositories
             try
             {
 
-                var team = _con.QueryWithRetry<Team>(sqlQueryUser, new { id }).SingleOrDefault();
-                var users = _con.QueryWithRetry<User>(sqlQueryTeam, new { id }).ToList();
+                var team = _con.QueryWithRetry<Team>(sqlQueryTeam, new { id }).SingleOrDefault();
+                var users = _con.QueryWithRetry<User>(sqlQueryUser, new { id }).ToList();
 
                 if (team != null)
                 {
