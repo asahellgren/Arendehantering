@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 
@@ -19,7 +16,7 @@ namespace DAL.Repositories
 
         private static RetryManager GetDefaultRetryManager()
         {
-            const int retryCount = 4;
+            const int retryCount = 3;
             const int minBackoffDelayMilliseconds = 2000;
             const int maxBackoffDelayMilliseconds = 8000;
             const int deltaBackoffMilliseconds = 2000;

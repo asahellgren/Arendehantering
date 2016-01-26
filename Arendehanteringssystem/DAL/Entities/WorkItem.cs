@@ -13,7 +13,6 @@ namespace DAL.Entities
         public bool Reviewed { get; set; }
         public int PriorityIndex { get; set; }
         public int? UserId { get; set; }
-        public int CreatedByUserId { get; set; }
         public int? TeamId { get; set; }
         public ICollection Issues { get; set; }
     }

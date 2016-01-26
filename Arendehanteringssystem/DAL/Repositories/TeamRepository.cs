@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DAL.Entities;
 using DAL.IRepositories;
-using Dapper;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace DAL.Repositories
