@@ -33,7 +33,7 @@ namespace DAL.Repositories
             try
             {
                 var workItem = _con.QueryWithRetry<WorkItem>("SELECT * FROM WorkItem WHERE Id = @id", new { id }).SingleOrDefault();
-                var issues = _con.QueryWithRetry<Issue>("SELECT * FROM Issue WHERE Id = @Id", new { id }).ToList();
+                var issues = _con.QueryWithRetry<Issue>("SELECT * FROM Issue WHERE WorkItemId = @Id", new { id }).ToList();
                 if (workItem != null)
                 {
                     workItem.Issues = issues;
