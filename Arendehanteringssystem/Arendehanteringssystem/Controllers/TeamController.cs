@@ -65,11 +65,12 @@ namespace Arendehanteringssystem.Controllers
         }
 
         // PUT api/team
-        [Route, HttpPut]
-        public HttpResponseMessage Put([FromBody]Team team)
+        [Route("{id}"), HttpPut]
+        public HttpResponseMessage Put(int id, [FromBody]Team team)
         {
             var response = new HttpResponseMessage();
-            if (team != null)
+
+            if (team != null && team.Id == id)
             {
                 if (_dBContext.Update(team))
                 {
@@ -78,8 +79,12 @@ namespace Arendehanteringssystem.Controllers
                 }
                 else
                 {
-                    response.StatusCode = HttpStatusCode.Forbidden;
+                    response.StatusCode = HttpStatusCode.BadRequest;
                 }
+            }
+            else
+            {
+                response.StatusCode = HttpStatusCode.BadRequest;
             }
             return response;
         }

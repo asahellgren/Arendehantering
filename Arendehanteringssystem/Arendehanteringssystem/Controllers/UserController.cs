@@ -90,7 +90,7 @@ namespace Arendehanteringssystem.Controllers
             }
             else
             {
-                response.StatusCode = HttpStatusCode.Forbidden;
+                response.StatusCode = HttpStatusCode.BadRequest;
             }
             return response;
         }
