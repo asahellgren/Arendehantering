@@ -49,8 +49,8 @@ namespace DAL.Repositories
         public WorkItem Add(WorkItem workItem)
         {
             _con.OpenWithRetry();
-            var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, PriorityIndex, CreatedByUserId, UserId, TeamId) " +
-                       "VALUES(@Title, @Description, @DateCreated, @DateDone, @Reviewed, @PriorityIndex, @CreatedByUserId, @UserId, @TeamId)" +
+            var sqlQuery = "INSERT INTO WorkItem (Title, Description, DateCreated, DateDone, Reviewed, PriorityIndex, UserId, TeamId) " +
+                       "VALUES(@Title, @Description, @DateCreated, @DateDone, @Reviewed, @PriorityIndex, @UserId, @TeamId)" +
                        "SELECT SCOPE_IDENTITY()";
             try
             {
